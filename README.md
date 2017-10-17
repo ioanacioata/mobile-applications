@@ -14,6 +14,7 @@ The manager can set at the beginning some goals he wants to achieve, in a given 
 This application is made to ensure the workflow of the projects: it can ensure the the daily 15 minutes meeting is held for every team until a given hour. At this meeting several questions, for each team member, are answered and noted in the application: 
  - is yesterday's goal achieved? 
  - which is the task for today? 
+ 
  Also, the elements considered significant for the computation of the KPI are noted here. For example, for a sales team, an example of this would be the number of calls that were made in the previous day.
 
  The manager can also configure this part and change or add other questions.
