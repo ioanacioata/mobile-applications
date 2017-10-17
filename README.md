@@ -1,8 +1,12 @@
 # mobile-applications
 This is a semester project for the Mobile Applications course. In the following, the application requirements are presented.
 
-Student: Bianca Ioana Cioata  email:cbie1885@scs.ubbcluj.ro or ioana.cioata26@gmail.com
+Student: Bianca Ioana Cioata   
+
+email:cbie1885@scs.ubbcluj.ro or ioana.cioata26@gmail.com
+
 Group: 933 
+
 Teacher: Dan Cojocar
 
 ## Project Description
