@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ioana.budgetapplication.DetailsActivity"
+    android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/detailsProductNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name:"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:selectAllOnFocus="false"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/detailsProductPriceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Price:"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/priceEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:selectAllOnFocus="false"
+            android:inputType="numberDecimal"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/detailsProductSupermarketTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Supermarket :"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/supermarketEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:selectAllOnFocus="false"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/detailsProductBrandTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Brand:"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/BrandEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:selectAllOnFocus="false"
+            android:textAlignment="center" />
+
+        <ImageView
+            android:id="@+id/detailsProductImageView"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            app:srcCompat="@drawable/cola5" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ok" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send Mail" />
+</LinearLayout>
