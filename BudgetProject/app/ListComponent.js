@@ -80,6 +80,7 @@ export default class ListComponent extends Component {
             />
         );
     }
+
 }
 
 const styles = StyleSheet.create({

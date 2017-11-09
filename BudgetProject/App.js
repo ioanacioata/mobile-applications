@@ -9,6 +9,7 @@ import {
     Platform,
     StyleSheet,
     Text,
+    TextInput,
     View
 } from 'react-native';
 import ListComponent from "./app/ListComponent";
@@ -27,7 +28,13 @@ export default class App extends Component<{}> {
                 <Text style={styles.welcome}>
                     Welcome to React Native Budget Application!
                 </Text>
+                <TextInput //input field
+                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
+                    //onChangeText={(text) => this.setState({text})}
+                    //value={this.state.text}
+                />
                 <ListComponent/>
+
             </View>
         );
     }
