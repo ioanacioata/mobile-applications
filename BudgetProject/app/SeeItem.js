@@ -45,8 +45,8 @@ export default class SeeItemScreen extends React.Component {
                 <TextInput onChangeText={(name) => this.setState({name})} value={this.state.name}/>
                 <TextInput keyboardType='numeric' onChangeText={(price) => this.setState({price})}
                            value={this.state.price.toString()}/>
-                <TextInput onChangeText={(type) => this.setState({type})} value={this.state.supermarket}/>
-                <TextInput onChangeText={(shop) => this.setState({shop})} value={this.state.brand}/>
+                <TextInput onChangeText={(supermarket) => this.setState({supermarket})} value={this.state.supermarket}/>
+                <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>
                 <Button title="ok" onPress={() => this.ok()}/>
             </View>
         );
