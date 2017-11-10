@@ -3,6 +3,7 @@ import {
     View,
     TextInput,
     Button,
+    Linking
 } from 'react-native';
 
 export default class SeeItemScreen extends React.Component {
@@ -35,8 +36,12 @@ export default class SeeItemScreen extends React.Component {
                 global.products[i] = item;
             }
         }
-        //Linking.openURL("mailto:bianca_cioata@yahoo.com?subject=ReactAppMail&body=" + JSON.stringify(item));
+
         this.props.navigation.navigate("Home");
+    }
+
+    share() {
+        Linking.openURL("mailto:bianca_cioata@yahoo.com?subject=BudgetReactAppMail&body=" + JSON.stringify(this.state));
     }
 
     render() {
@@ -48,6 +53,7 @@ export default class SeeItemScreen extends React.Component {
                 <TextInput onChangeText={(supermarket) => this.setState({supermarket})} value={this.state.supermarket}/>
                 <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>
                 <Button title="ok" onPress={() => this.ok()}/>
+                <Button title="share" color='purple' onPress={() => this.share()}/>
             </View>
         );
     }
