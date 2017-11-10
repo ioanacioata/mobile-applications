@@ -5,56 +5,66 @@
  */
 
 import React, {Component} from 'react';
-import {
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    View
-} from 'react-native';
-import ListComponent from "./app/ListComponent";
 
-const instructions = Platform.select({
-    ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-    android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import {StackNavigator} from 'react-navigation';
+import HomeScreen from "./app/MainWindow";
+import SeeItemScreen from "./app/SeeItem"
 
-export default class App extends Component<{}> {
-    render() {
-        return (
-            <View>
-                <Text style={styles.welcome}>
-                    Welcome to React Native Budget Application!
-                </Text>
-                <TextInput //input field
-                    style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-                    //onChangeText={(text) => this.setState({text})}
-                    //value={this.state.text}
-                />
-                <ListComponent/>
+global.products = [
+    {
+        id: 1,
+        name: 'Coca-Cola 0.5l',
+        price: 2.5,
+        supermarket: 'Auchan Iulis Mall',
+        brand: 'Coca-Cola'
+    },
 
-            </View>
-        );
+    {
+        id: 2,
+        name: 'Cutie servetele',
+        price: 5.5,
+        supermarket: 'Lidl',
+        brand: 'Cien'
+    },
+    {
+        id: 3,
+        name: 'Apa minerala 0.5l',
+        price: 3.6,
+        supermarket: 'Auchan Iulis Mall',
+        brand: 'Aqua Carpatica'
+    },
+    {
+        id: 4,
+        name: 'Ciocolata cu Oreo',
+        price: 4.2,
+        supermarket: 'Auchan Iulis Mall',
+        brand: 'Milka'
+    },
+    {
+        id: 5,
+        name: 'Ciocolata cu Capsuni',
+        price: 4.0,
+        supermarket: 'Auchan Iulis Mall',
+        brand: 'Milka'
+    },
+    {
+        id: 6,
+        name: 'Gummy Bears',
+        price: 3.8,
+        supermarket: 'Auchan Iulis Mall',
+        brand: 'Haribo'
     }
-}
+];
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+
+const App = StackNavigator({
+    Home: {
+        screen: HomeScreen,
     },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+    SeeItem: {
+        path: 'seeItem/:item',
+        screen: SeeItemScreen,
+    }
 });
+
+export default App;
