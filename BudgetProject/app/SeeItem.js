@@ -29,7 +29,6 @@ export default class SeeItemScreen extends React.Component {
     }
 
     ok() {
-
         var item = this.state;
         for (var i = 0; i < global.products.length; i++) {
             if (global.products[i].id === item.id) {
@@ -38,6 +37,7 @@ export default class SeeItemScreen extends React.Component {
         }
 
         this.props.navigation.navigate("Home");
+        //To do : navigate back and refresh the main page
     }
 
     share() {
