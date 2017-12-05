@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ioana.budgetapplication.DetailsActivity"
+    tools:context="com.example.ioana.budgetapplication.ui.DetailsActivity"
     android:orientation="vertical">
 
         <TextView
