@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ioana.budgetapplication.ui.DetailsActivity"
-    android:orientation="vertical">
+    tools:context="com.example.ioana.budgetapplication.ui.AddActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.ioana.budgetapplication.ui.DetailsActivity">
 
         <TextView
-            android:id="@+id/detailsProductNameTextView"
+            android:id="@+id/addProductNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name:"
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/nameEditText"
+            android:id="@+id/nameToAddEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
@@ -23,42 +28,42 @@
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/detailsProductPriceTextView"
+            android:id="@+id/addProductPriceTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Price:"
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/priceEditText"
+            android:id="@+id/priceToAddEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
-            android:selectAllOnFocus="false"
             android:inputType="numberDecimal"
+            android:selectAllOnFocus="false"
             android:textAlignment="center" />
 
         <TextView
-            android:id="@+id/detailsProductSupermarketTextView"
+            android:id="@+id/addProductSupermarketTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Supermarket :"
             android:textAlignment="center" />
 
-    <Spinner
-        android:id="@+id/supermarketSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/supermarketToAddSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/detailsProductBrandTextView"
+            android:id="@+id/addProductBrandTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Brand:"
             android:textAlignment="center" />
 
         <EditText
-            android:id="@+id/BrandEditText"
+            android:id="@+id/brandToAddEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/editbox_background"
@@ -66,26 +71,17 @@
             android:textAlignment="center" />
 
         <ImageView
-            android:id="@+id/detailsProductImageView"
+            android:id="@+id/addProductImageView"
             android:layout_width="match_parent"
             android:layout_height="155dp"
             app:srcCompat="@drawable/cola5" />
 
         <Button
-            android:id="@+id/okButton"
+            android:id="@+id/saveButtonAddWindow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:text="Save"
+            android:layout_margin="10dp"/>
 
-        <Button
-            android:id="@+id/sendButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Send Mail" />
-
-        <Button
-            android:id="@+id/deleteButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Delete" />
-</LinearLayout>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

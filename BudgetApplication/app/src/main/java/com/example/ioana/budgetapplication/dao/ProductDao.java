@@ -19,8 +19,11 @@ public interface ProductDao {
     @Query("select * from product")
     public List<Product> loadAll();
 
-    @Query("select * from product where name like :name")
+    @Query("select * from product where name like :name ")
     public Product findByName(String name);
+
+    @Query("select * from product where name like :name and supermarketId = :supermarketId AND price = :price and brand like :brand")
+    public Product findProduct(String name, int supermarketId, Double price, String brand);
 
     @Insert
     public void insert(Product... product);
