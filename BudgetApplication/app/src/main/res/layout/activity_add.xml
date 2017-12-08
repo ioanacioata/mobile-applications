@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginTop="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_margin="10dp"
     tools:context="com.example.ioana.budgetapplication.ui.AddActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.example.ioana.budgetapplication.ui.DetailsActivity">
 
         <TextView
             android:id="@+id/addProductNameTextView"
@@ -78,10 +77,21 @@
 
         <Button
             android:id="@+id/saveButtonAddWindow"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="Save"
+            android:background="@android:color/holo_red_dark"
+            android:textColor="@android:color/white"
             android:layout_margin="10dp"/>
 
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/addSupermarketButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Add Supermarket"/>
+
+</LinearLayout>

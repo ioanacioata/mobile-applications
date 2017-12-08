@@ -24,10 +24,13 @@ public interface SupermarketDao {
     public Supermarket findById(int id);
 
     @Query("select * from supermarket where name like :name")
-    public Supermarket findByName(String  name);
+    public Supermarket findByName(String name);
 
     @Query("select name from supermarket")
     public List<String> getAllNames();
+
+    @Query("select * from supermarket where name like :name and address like :address")
+    public Supermarket getSupermarket(String name, String address);
 
     @Insert
     public void insert(Supermarket... supermarkets);

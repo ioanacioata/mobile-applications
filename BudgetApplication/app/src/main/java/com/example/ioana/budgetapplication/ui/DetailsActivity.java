@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.config.AppDatabase;
@@ -103,12 +104,11 @@ public class DetailsActivity extends AppCompatActivity {
                 Product p = db.productDao().findProduct(name, getSupermarketByName(supermarket).getId(), price, brand);
 
                 Intent intent = new Intent(DetailsActivity.this, MainActivity.class);
-                if (p.equals(null)) {
-                    setResult(Activity.RESULT_OK, intent);
-                    finish();
+                if (p==null) {
+                    Toast.makeText(DetailsActivity.this,"This product does not exist and it cannot be deleted!", Toast.LENGTH_SHORT).show();
                 } else {
                     db.productDao().delete(p);
-                    setResult(Activity.RESULT_CANCELED, intent);
+                    setResult(Activity.RESULT_OK, intent);
                     finish();
                 }
             }

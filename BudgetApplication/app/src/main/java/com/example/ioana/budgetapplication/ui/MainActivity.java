@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.model.Supermarket;
 import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
@@ -41,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         displayListWithAction();
 
         addActionToAddButton();
+
+        Button showChart = findViewById(R.id.showChart);
+        showChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Show chart clicked!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void addActionToAddButton() {
@@ -62,9 +71,8 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE || requestCode == REQUEST_CODE_ADD) {
             if (resultCode == RESULT_OK) {
                 displayListWithAction();
-            }
-            else{
-
+            } else {
+                //Toast.makeText(MainActivity.this, "Action canceled!", Toast.LENGTH_SHORT).show();
             }
         }
     }

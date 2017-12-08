@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context="com.example.ioana.budgetapplication.ui.DetailsActivity"
     android:orientation="vertical">
 
@@ -48,7 +49,8 @@
     <Spinner
         android:id="@+id/supermarketSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAlignment="center" />
 
         <TextView
             android:id="@+id/detailsProductBrandTextView"
@@ -75,17 +77,26 @@
             android:id="@+id/okButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Ok"
+            android:layout_margin="2dp"/>
 
         <Button
             android:id="@+id/sendButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Send Mail" />
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Send Mail"
+            android:layout_margin="2dp" />
 
         <Button
             android:id="@+id/deleteButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Delete" />
+            android:textColor="@android:color/white"
+            android:background="@color/colorPrimary"
+            android:text="Delete"
+            android:layout_margin="2dp"/>
 </LinearLayout>

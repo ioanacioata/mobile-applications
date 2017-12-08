@@ -1,6 +1,8 @@
 package com.example.ioana.budgetapplication.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.config.AppDatabase;
 import com.example.ioana.budgetapplication.model.Product;
+import com.example.ioana.budgetapplication.model.Supermarket;
 
 import java.util.List;
 
@@ -70,6 +74,61 @@ public class AddActivity extends AppCompatActivity {
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+            }
+        });
+
+        Button addSupermarket = findViewById(R.id.addSupermarketButton);
+        addSupermarket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(AddActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_add_supermarket, null);
+                final EditText name = mView.findViewById(R.id.supermarketNameEditText);
+                final EditText address = mView.findViewById(R.id.supermarketAddressEditText);
+                Button add = mView.findViewById(R.id.saveButtonDialog);
+                Button cancel = mView.findViewById(R.id.cancelButtonDialog);
+
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+                add.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String nameS = name.getText().toString();
+                        String addressS = address.getText().toString();
+
+                        if (!nameS.isEmpty() && !addressS.isEmpty()) {
+                            final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+                            if (db.supermarketDao().getSupermarket(nameS, addressS) == null){
+                                Supermarket s = new Supermarket(nameS, addressS);
+                                db.supermarketDao().insert(s);
+                                Log.i(TAG, "inserted supermarket with name = "+nameS+" and address= "+addressS);
+                                //update spineer
+                                List<String> spinnerList = db.supermarketDao().getAllNames();
+                                Log.i(TAG, spinnerList.get(0) + " is first elem and size is " + spinnerList.size());
+                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AddActivity.this, android.R.layout.simple_spinner_item, spinnerList);
+                                supermarketSpinner.setAdapter(arrayAdapter);
+
+                                dialog.dismiss();
+                            }
+                            else{
+                                Toast.makeText(AddActivity.this, "This Supermarket already exists!", Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                            Toast.makeText(AddActivity.this, "No empty strings!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 

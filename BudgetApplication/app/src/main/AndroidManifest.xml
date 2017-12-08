@@ -18,7 +18,6 @@
         </activity>
         <activity android:name=".ui.DetailsActivity" />
         <activity android:name=".ui.AddActivity" />
-        <activity android:name=".ui.Dialog"></activity>
     </application>
 
 </manifest>
