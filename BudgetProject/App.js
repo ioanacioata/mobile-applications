@@ -9,30 +9,31 @@ import React, {Component} from 'react';
 import {StackNavigator} from 'react-navigation';
 import HomeScreen from "./app/MainWindow";
 import SeeItemScreen from "./app/SeeItem"
+import AddItemScreen from "./app/AddItem";
 
 global.products = [
-    {
-        id: 1,
-        name: 'Coca-Cola 0.5l',
-        price: 2.5,
-        supermarket: 'Auchan Iulis Mall',
-        brand: 'Coca-Cola'
-    },
+    // {
+    //     id: 1,
+    //     name: 'Coca-Cola 0.5l',
+    //     price: 2.5,
+    //     supermarket: 'Auchan Iulis Mall',
+    //     brand: 'Coca-Cola'
+    // },
 
-    {
-        id: 2,
-        name: 'Cutie servetele',
-        price: 5.5,
-        supermarket: 'Lidl',
-        brand: 'Cien'
-    },
-    {
-        id: 3,
-        name: 'Apa minerala 0.5l',
-        price: 3.6,
-        supermarket: 'Auchan Iulis Mall',
-        brand: 'Aqua Carpatica'
-    },
+    // {
+    //     id: 2,
+    //     name: 'Cutie servetele',
+    //     price: 5.5,
+    //     supermarket: 'Lidl',
+    //     brand: 'Cien'
+    // },
+    // {
+    //     id: 3,
+    //     name: 'Apa minerala 0.5l',
+    //     price: 3.6,
+    //     supermarket: 'Auchan Iulis Mall',
+    //     brand: 'Aqua Carpatica'
+    // },
     {
         id: 4,
         name: 'Ciocolata cu Oreo',
@@ -64,6 +65,10 @@ const App = StackNavigator({
     SeeItem: {
         path: 'seeItem/:item',
         screen: SeeItemScreen,
+    },
+    AddItem:{
+        path:'addItem',
+        screen: AddItemScreen,
     }
 });
 

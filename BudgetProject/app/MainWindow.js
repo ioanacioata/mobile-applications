@@ -4,7 +4,8 @@ import {
     View,
     ListView,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Button
 } from 'react-native';
 import ProductsOperations from "./database/ProductOperations";
 
@@ -14,7 +15,8 @@ export default class HomeScreen extends React.Component {
 
     constructor() {
         super();
-        const productOperations = new ProductsOperations();
+        this.productOperations = new ProductsOperations();
+        this.productOperations.getAll();
         const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             productDataSource: dataSource.cloneWithRows(products),
@@ -35,13 +37,18 @@ export default class HomeScreen extends React.Component {
         )
     }
 
+    add(){
+        this.props.navigation.navigate("AddItem");
+    }
+
+
     render() {
         return (
             <View>
                 <Text>Products</Text>
                 <ListView dataSource={this.state.productDataSource} renderRow={this.renderRow.bind(this)}/>
+                <Button title="Add" color='purple' onPress={() => this.add()}/>
             </View>
-
         )
     }
 };

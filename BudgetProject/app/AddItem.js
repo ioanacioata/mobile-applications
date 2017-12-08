@@ -1,16 +1,19 @@
 import React from 'react';
 import {
     View,
+    Text,
     TextInput,
     Button,
-    Text,
-    Linking
 } from 'react-native';
 
-export default class SeeItemScreen extends React.Component {
+import ProductOperations from "./database/ProductOperations";
 
-    constructor(props) {
+export default class AddItemScreen extends React.Component{
+    constructor(props){
         super(props);
+
+        this.productsOp= new ProductOperations();
+
         this.state = {
             id: 0,
             name: "",
@@ -19,31 +22,13 @@ export default class SeeItemScreen extends React.Component {
             brand: ""
         };
 
-
-        if (this.props.navigation.state.params.id != undefined) {
-            var toEdit = this.props.navigation.state.params;
-            this.state.id = toEdit.id;
-            this.state.name = toEdit.name;
-            this.state.price = toEdit.price;
-            this.state.supermarket = toEdit.supermarket;
-            this.state.brand = toEdit.brand;
-        }
     }
 
-    ok() {
+    add() {
         var item = this.state;
-        for (var i = 0; i < global.products.length; i++) {
-            if (global.products[i].id === item.id) {
-                global.products[i] = item;
-            }
-        }
-
+        this.productsOp.save(item.name, item.price, item.supermarket, item.brand);
         this.props.navigation.navigate("Home");
         //To do : navigate back and refresh the main page
-    }
-
-    share() {
-        Linking.openURL("mailto:bianca_cioata@yahoo.com?subject=BudgetReactAppMail&body=" + JSON.stringify(this.state));
     }
 
     render() {
@@ -58,9 +43,7 @@ export default class SeeItemScreen extends React.Component {
                 <TextInput onChangeText={(supermarket) => this.setState({supermarket})} value={this.state.supermarket}/>
                 <Text>Brand: </Text>
                 <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>
-                <Button title="ok"  onPress={() => this.ok()}/>
-                <Button title="delete" onPress={() => this.delete()}/>
-                <Button title="share" color='red' onPress={() => this.share()}/>
+                <Button title="Add" onPress={() => this.add()}/>
             </View>
         );
     }
