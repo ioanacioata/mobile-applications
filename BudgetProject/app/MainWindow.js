@@ -6,11 +6,15 @@ import {
     StyleSheet,
     TouchableOpacity
 } from 'react-native';
+import ProductsOperations from "./database/ProductOperations";
+
+
 
 export default class HomeScreen extends React.Component {
 
     constructor() {
         super();
+        const productOperations = new ProductsOperations();
         const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             productDataSource: dataSource.cloneWithRows(products),
