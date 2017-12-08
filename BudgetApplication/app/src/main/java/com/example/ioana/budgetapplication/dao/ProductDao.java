@@ -17,23 +17,26 @@ import java.util.List;
 @Dao
 public interface ProductDao {
     @Query("select * from product")
-    public List<Product> loadAll();
+    List<Product> loadAll();
 
     @Query("select * from product where name like :name ")
-    public Product findByName(String name);
+    Product findByName(String name);
 
     @Query("select * from product where name like :name and supermarketId = :supermarketId AND price = :price and brand like :brand")
-    public Product findProduct(String name, int supermarketId, Double price, String brand);
+    Product findProduct(String name, int supermarketId, Double price, String brand);
 
     @Insert
-    public void insert(Product... product);
+    void insert(Product... product);
+
+    @Query("select count(*) from product where supermarketId = :supermarketId")
+    Integer countProducts(int supermarketId);
 
     @Update
-    public void update(Product... product);
+    void update(Product... product);
 
 
     @Delete
-    public void delete(Product... product);
+    void delete(Product... product);
 
 }
 
