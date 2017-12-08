@@ -36,10 +36,8 @@ export default class HomeScreen extends React.Component {
         };
 
 
-        //for the chart
-        //    this.data = [{"name":"name","population":10}, {"name":"name1","population":70}];
-
-        // this.populateChartData();
+        this.data = [];
+        this.getChartData();
 
 
         this.options = {
@@ -69,6 +67,11 @@ export default class HomeScreen extends React.Component {
         };
     }
 
+    getChartData(){
+        this.data.push({ "name" : "Type1", "population" : 50});
+        this.data.push({"name" : "Type2", "population" : 30});
+        this.data.push({"name" : "Type3", "population" : 100});
+    }
     refresh() {
         this.setState(prevState => {
             return Object.assign({}, prevState, {dataSource: dataSource.cloneWithRows(global.products)});
@@ -114,10 +117,10 @@ export default class HomeScreen extends React.Component {
                 <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
                 <Button title="Add" onPress={() => this.add()}/>
 
-                {/*<Pie*/}
-                {/*data={this.data}*/}
-                {/*options={this.options}*/}
-                {/*accessorKey="population"/>*/}
+                <Pie
+                    data={this.data}
+                    options={this.options}
+                    accessorKey="population" />
             </View>
         )
     }
