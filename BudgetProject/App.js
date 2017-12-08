@@ -9,13 +9,21 @@ import React, {Component} from 'react';
 import {StackNavigator} from 'react-navigation';
 import HomeScreen from "./app/MainWindow";
 import SeeItemScreen from "./app/SeeItem"
+import AddItemScreen from "./app/AddItem";
+
+global.supermarkets=[
+    {name:"Profi Marasti"},
+    {name:"Auchan Iulius Mall"},
+    {name:"Kaufland Gheorgheni"},
+    {name:"Carefour Vivo"}
+]
 
 global.products = [
     {
         id: 1,
         name: 'Coca-Cola 0.5l',
         price: 2.5,
-        supermarket: 'Auchan Iulis Mall',
+        supermarket: global.supermarkets[0].name,
         brand: 'Coca-Cola'
     },
 
@@ -23,35 +31,35 @@ global.products = [
         id: 2,
         name: 'Cutie servetele',
         price: 5.5,
-        supermarket: 'Lidl',
+        supermarket: global.supermarkets[1].name,
         brand: 'Cien'
     },
     {
         id: 3,
         name: 'Apa minerala 0.5l',
         price: 3.6,
-        supermarket: 'Auchan Iulis Mall',
+        supermarket: global.supermarkets[2].name,
         brand: 'Aqua Carpatica'
     },
     {
         id: 4,
         name: 'Ciocolata cu Oreo',
         price: 4.2,
-        supermarket: 'Auchan Iulis Mall',
+        supermarket: global.supermarkets[1].name,
         brand: 'Milka'
     },
     {
         id: 5,
         name: 'Ciocolata cu Capsuni',
         price: 4.0,
-        supermarket: 'Auchan Iulis Mall',
+        supermarket: global.supermarkets[3].name,
         brand: 'Milka'
     },
     {
         id: 6,
         name: 'Gummy Bears',
         price: 3.8,
-        supermarket: 'Auchan Iulis Mall',
+        supermarket: global.supermarkets[2].name,
         brand: 'Haribo'
     }
 ];
@@ -64,6 +72,10 @@ const App = StackNavigator({
     SeeItem: {
         path: 'seeItem/:item',
         screen: SeeItemScreen,
+    },
+    AddItem: {
+        path: 'addItem',
+        screen: AddItemScreen,
     }
 });
 

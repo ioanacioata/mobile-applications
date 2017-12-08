@@ -4,17 +4,14 @@ import {
     View,
     ListView,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Button
 } from 'react-native';
-import ProductsOperations from "./database/ProductOperations";
-
-
 
 export default class HomeScreen extends React.Component {
 
     constructor() {
         super();
-        const productOperations = new ProductsOperations();
         const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             productDataSource: dataSource.cloneWithRows(products),
@@ -23,6 +20,10 @@ export default class HomeScreen extends React.Component {
 
     edit(item) {
         this.props.navigation.navigate("SeeItem", item);
+    }
+
+    add() {
+        this.props.navigation.navigate("AddItem");
     }
 
     renderRow(item, sectionId, rowId, highlightRow) {
@@ -37,11 +38,11 @@ export default class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={{flex:1, padding:10, justifyContent:'space-between'}}>
                 <Text>Products</Text>
                 <ListView dataSource={this.state.productDataSource} renderRow={this.renderRow.bind(this)}/>
+                <Button title="Add"  onPress={() => this.add()}/>
             </View>
-
         )
     }
 };
@@ -50,21 +51,21 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 25,
+        padding: 12,
         backgroundColor: '#f4f4f4',
-        marginBottom: 3
     },
 
     details: {
-        //fontSize: 14,
-        marginBottom: 8
+        marginBottom: 2
     },
     headline: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
-        marginBottom: 8,
+        marginBottom: 3,
         flex: 1
     }
+
+
 });
 
 

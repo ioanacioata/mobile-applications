@@ -3,12 +3,11 @@ import {
     View,
     TextInput,
     Button,
-    Linking,
     Text,
     Picker
 } from 'react-native';
 
-export default class SeeItemScreen extends React.Component {
+export default class AddItemScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -20,14 +19,6 @@ export default class SeeItemScreen extends React.Component {
             brand: ""
         };
 
-        if (this.props.navigation.state.params.id != undefined) {
-            var toEdit = this.props.navigation.state.params;
-            this.state.id = toEdit.id;
-            this.state.name = toEdit.name;
-            this.state.price = toEdit.price;
-            this.state.supermarket = toEdit.supermarket;
-            this.state.brand = toEdit.brand;
-        }
     }
 
     ok() {
@@ -42,17 +33,9 @@ export default class SeeItemScreen extends React.Component {
         //To do : navigate back and refresh the main page
     }
 
-    delete() {
-
-    }
-
-    share() {
-        Linking.openURL("mailto:bianca_cioata@yahoo.com?subject=BudgetReactAppMail&body=" + JSON.stringify(this.state));
-    }
-
     render() {
         return (
-            <View style={{justifyContent: 'space-between',flex:1, padding:10}}>
+            <View style={{flex: 1, padding: 10, justifyContent: 'space-between'}}>
                 <Text>Name:</Text>
                 <TextInput onChangeText={(name) => this.setState({name})} value={this.state.name}/>
                 <Text>Price:</Text>
@@ -68,9 +51,8 @@ export default class SeeItemScreen extends React.Component {
                 </Picker>
                 <Text>Brand:</Text>
                 <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>
+
                 <Button title="ok" onPress={() => this.ok()}/>
-                <Button title="delete" color ='purple' onPress={() => this.delete()}/>
-                <Button title="share" color='red' onPress={() => this.share()}/>
             </View>
         );
     }
