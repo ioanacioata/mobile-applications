@@ -12,16 +12,15 @@ export default class StorageHelper {
                 return;
             }
 
-            let parsed = await JSON.parse(response);
+            let parsed = JSON.parse(response);
             var elem;
-            alert(parsed+" response "+response);
+            global.products = [];
             for (var i = 0; i < parsed.length; i++) {
-                elem = parsed[i];
-                alert(elem.name);
+                elem = await AsyncStorage.getItem(JSON.stringify(parsed[i].toString()));
                 if (elem === null) {
                     console.error("Can't retrieve all items");
                 }
-                global.products.push(elem);
+                global.products.push(JSON.parse(elem));
             }
         }
         catch (error) {
@@ -35,18 +34,20 @@ export default class StorageHelper {
      */
     getIds() {
         var id_array = [];
+
         global.products.forEach((elem) => {
-            id_array.push(elem.id);
+            id_array.push(elem.id.toString());
         });
         return id_array;
     }
 
     async addItem(item) {
         try {
-            await  AsyncStorage.setItem(JSON.stringify(item.id), JSON.stringify(item));
+            //console.error({"item": item, "idList": this.getIds()});
+            await  AsyncStorage.setItem(JSON.stringify(item.id.toString()), JSON.stringify(item));
             await AsyncStorage.setItem("productsList", JSON.stringify(this.getIds()));
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 
@@ -58,6 +59,4 @@ export default class StorageHelper {
             console.log(err);
         }
     }
-
-
 }

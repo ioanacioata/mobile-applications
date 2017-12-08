@@ -5,25 +5,43 @@ import {
     ListView,
     StyleSheet,
     TouchableOpacity,
-    Button
+    Button, AsyncStorage
 } from 'react-native';
 
 import {Pie} from 'react-native-pathjs-charts';
+import StorageHelper from "./storage/StorageHelper";
 
-
+var dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class HomeScreen extends React.Component {
 
-    constructor() {
-        super();
-        const dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    constructor(props) {
+        super(props);
+        this.storageHelper = new StorageHelper();
+        //AsyncStorage.setItem("productsList", JSON.stringify(["1", "2"]));
+        //AsyncStorage.removeItem("productsList");
+        // AsyncStorage.setItem("1", JSON.stringify({
+        //         id: 1,
+        //         name: 'Coca-Cola 0.5l',
+        //         price: 2.5,
+        //         supermarket: global.supermarkets[0],
+        //         brand: 'Coca-Cola'
+        //     }));
+        this.storageHelper.initArray().then(() => {
+            this.refresh()
+        }, () => {
+        });
 
         this.state = {
-            productDataSource: dataSource.cloneWithRows(global.products)
+            dataSource: dataSource.cloneWithRows(global.products)
         };
 
+
         //for the chart
-        this.data = [];
-        this.populateChartData();
+        //    this.data = [{"name":"name","population":10}, {"name":"name1","population":70}];
+
+        // this.populateChartData();
+
+
         this.options = {
             margin: {
                 top: 5,
@@ -51,6 +69,13 @@ export default class HomeScreen extends React.Component {
         };
     }
 
+    refresh() {
+        this.setState(prevState => {
+            return Object.assign({}, prevState, {dataSource: dataSource.cloneWithRows(global.products)});
+
+        });
+    }
+
     populateChartData() {
         for (var i = 0; i < global.supermarkets.length; i++) {
             var name = global.supermarkets[i];
@@ -65,11 +90,11 @@ export default class HomeScreen extends React.Component {
     }
 
     edit(item) {
-        this.props.navigation.navigate("SeeItem", item);
+        this.props.navigation.navigate("SeeItem", {refreshFunction: this.refresh.bind(this), item:item});
     }
 
     add() {
-        this.props.navigation.navigate("AddItem");
+        this.props.navigation.navigate("AddItem", {refreshFunction: this.refresh.bind(this)});
     }
 
     renderRow(item, sectionId, rowId, highlightRow) {
@@ -86,13 +111,13 @@ export default class HomeScreen extends React.Component {
         return (
             <View style={{flex: 1, padding: 10, justifyContent: 'space-between'}}>
                 <Text>Products</Text>
-                <ListView dataSource={this.state.productDataSource} renderRow={this.renderRow.bind(this)} />
+                <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
                 <Button title="Add" onPress={() => this.add()}/>
 
                 {/*<Pie*/}
-                     {/*data={this.data}*/}
-                    {/*options={this.options}*/}
-                    {/*accessorKey="prod"/>*/}
+                {/*data={this.data}*/}
+                {/*options={this.options}*/}
+                {/*accessorKey="population"/>*/}
             </View>
         )
     }

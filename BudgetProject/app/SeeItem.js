@@ -5,7 +5,8 @@ import {
     Button,
     Linking,
     Text,
-    Picker
+    Picker,
+    Alert
 } from 'react-native';
 import StorageHelper from "./storage/StorageHelper";
 
@@ -13,6 +14,7 @@ export default class SeeItemScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.storageHelper = new StorageHelper();
         this.state = {
             id: 0,
             name: "",
@@ -21,8 +23,8 @@ export default class SeeItemScreen extends React.Component {
             brand: ""
         };
 
-        if (this.props.navigation.state.params.id != undefined) {
-            var toEdit = this.props.navigation.state.params;
+        if (this.props.navigation.state.params.item != undefined) {
+            var toEdit = this.props.navigation.state.params.item;
             this.state.id = toEdit.id;
             this.state.name = toEdit.name;
             this.state.price = toEdit.price;
@@ -39,13 +41,30 @@ export default class SeeItemScreen extends React.Component {
             }
         }
 
-        this.props.navigation.navigate("Home");
-        //To do : navigate back and refresh the main page
+        this.storageHelper.addItem(item);
+        this.props.navigation.state.params.refreshFunction();
+        this.props.navigation.goBack();
+
     }
 
+    askDelete(){
+        Alert.alert("Are you sure?", "", [{
+            text: "No", onPress: () => {
+            }, style: 'cancel'
+        }, {text: "yes", onPress: () => this.delete()}], {cancelable: true});
+    }
 
     delete() {
-        alert("Not implemented yet");
+
+        var item = this.state;
+        for (var i = 0; i < global.products.length; i++) {
+            if (global.products[i].id === item.id) {
+                global.products.splice(i, 1);
+            }
+        }
+        this.storageHelper.deleteItem(this.state.id.toString());
+        this.props.navigation.state.params.refreshFunction();
+        this.props.navigation.goBack();
     }
 
     share() {
@@ -54,7 +73,7 @@ export default class SeeItemScreen extends React.Component {
 
     render() {
         return (
-            <View style={{justifyContent: 'space-between',flex:1, padding:10}}>
+            <View style={{justifyContent: 'space-between', flex: 1, padding: 10}}>
                 <Text>Name:</Text>
                 <TextInput onChangeText={(name) => this.setState({name})} value={this.state.name}/>
                 <Text>Price:</Text>
@@ -64,14 +83,17 @@ export default class SeeItemScreen extends React.Component {
                 <Picker
                     selectedValue={this.state.supermarket}
                     onValueChange={(itemValue, itemIndex) => this.setState({supermarket: itemValue})}>
-                    {global.supermarkets.map((t, i) => {
-                        return <Picker.Item label={t.name} value={t.name} key={t.name}/>
-                    })}
+                    <Picker.Item label={"nume1"} value={"nume1"} key={"nume1"}/>
+                    <Picker.Item label={"nume2"} value={"nume2"} key={"nume2"}/>
+                    <Picker.Item label={"nume3"} value={"nume3"} key={"nume3"}/>
+                    {/*{global.supermarkets.map((t, i) => {*/}
+                    {/*return <Picker.Item label={t.name} value={t.name} key={t.name}/>*/}
+                    {/*})}*/}
                 </Picker>
                 <Text>Brand:</Text>
                 <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>
                 <Button title="ok" onPress={() => this.ok()}/>
-                <Button title="delete" color ='purple' onPress={() => this.delete()}/>
+                <Button title="delete" color='purple' onPress={() => this.askDelete()}/>
                 <Button title="share" color='red' onPress={() => this.share()}/>
             </View>
         );
