@@ -18,18 +18,22 @@ export default class AddItemScreen extends React.Component {
             supermarket: "",
             brand: ""
         };
-
     }
 
-    ok() {
+     ok() {
+        var found=0;
         var item = this.state;
         for (var i = 0; i < global.products.length; i++) {
             if (global.products[i].id === item.id) {
-                global.products[i] = item;
+                alert("Can't add this!");
+                found =1;
             }
         }
-
-        this.props.navigation.goBack();
+        if(found===1){
+            item.id=global.products[global.products.length-1].id+1;
+            global.products.push(item);
+        }
+        this.props.navigation.navigate("Home");
     }
 
     render() {
@@ -45,7 +49,7 @@ export default class AddItemScreen extends React.Component {
                     selectedValue={this.state.supermarket}
                     onValueChange={(itemValue, itemIndex) => this.setState({supermarket: itemValue})}>
                     {global.supermarkets.map((t, i) => {
-                        return <Picker.Item label={t.name} value={t.name} key={t.name}/>
+                        return <Picker.Item label={t} value={t} key={t}/>
                     })}
                 </Picker>
                 <Text>Brand:</Text>

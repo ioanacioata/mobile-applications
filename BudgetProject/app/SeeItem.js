@@ -13,7 +13,6 @@ export default class SeeItemScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.storageHelper = new StorageHelper();
         this.state = {
             id: 0,
             name: "",
@@ -32,21 +31,21 @@ export default class SeeItemScreen extends React.Component {
         }
     }
 
-    async ok() {
+    ok() {
         var item = this.state;
         for (var i = 0; i < global.products.length; i++) {
             if (global.products[i].id === item.id) {
                 global.products[i] = item;
             }
         }
-        this.storageHelper.addItem(item).then(()=>{},()=>{});
-        this.props.navigation.state.params.refreshFunction();
-        this.props.navigation.goBack();
+
+        this.props.navigation.navigate("Home");
+        //To do : navigate back and refresh the main page
     }
 
 
     delete() {
-
+        alert("Not implemented yet");
     }
 
     share() {
