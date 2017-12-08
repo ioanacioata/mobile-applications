@@ -7,11 +7,13 @@ import {
     Text,
     Picker
 } from 'react-native';
+import StorageHelper from "./storage/StorageHelper";
 
 export default class SeeItemScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.storageHelper = new StorageHelper();
         this.state = {
             id: 0,
             name: "",
@@ -30,17 +32,18 @@ export default class SeeItemScreen extends React.Component {
         }
     }
 
-    ok() {
+    async ok() {
         var item = this.state;
         for (var i = 0; i < global.products.length; i++) {
             if (global.products[i].id === item.id) {
                 global.products[i] = item;
             }
         }
-
-        this.props.navigation.navigate("Home");
-        //To do : navigate back and refresh the main page
+        this.storageHelper.addItem(item).then(()=>{},()=>{});
+        this.props.navigation.state.params.refreshFunction();
+        this.props.navigation.goBack();
     }
+
 
     delete() {
 

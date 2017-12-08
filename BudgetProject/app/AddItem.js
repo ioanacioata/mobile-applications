@@ -29,8 +29,7 @@ export default class AddItemScreen extends React.Component {
             }
         }
 
-        this.props.navigation.navigate("Home");
-        //To do : navigate back and refresh the main page
+        this.props.navigation.goBack();
     }
 
     render() {

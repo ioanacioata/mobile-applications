@@ -4,19 +4,19 @@
  * @flow
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 
 import {StackNavigator} from 'react-navigation';
 import HomeScreen from "./app/MainWindow";
 import SeeItemScreen from "./app/SeeItem"
 import AddItemScreen from "./app/AddItem";
 
-global.supermarkets=[
-    {name:"Profi Marasti"},
-    {name:"Auchan Iulius Mall"},
-    {name:"Kaufland Gheorgheni"},
-    {name:"Carefour Vivo"}
-]
+global.supermarkets = [
+    {name: "Profi Marasti"},
+    {name: "Auchan Iulius Mall"},
+    {name: "Kaufland Gheorgheni"},
+    {name: "Carefour Vivo"}
+];
 
 global.products = [
     {
@@ -33,6 +33,7 @@ global.products = [
         price: 5.5,
         supermarket: global.supermarkets[1].name,
         brand: 'Cien'
+
     },
     {
         id: 3,
