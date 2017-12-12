@@ -68,9 +68,10 @@ export default class HomeScreen extends React.Component {
     }
 
     getChartData(){
-        this.data.push({ "name" : "Type1", "population" : 50});
-        this.data.push({"name" : "Type2", "population" : 30});
-        this.data.push({"name" : "Type3", "population" : 100});
+        this.data.push({ "name" : "Profi Marasti", "products" : 50});
+        this.data.push({"name" : "Auchan Iulius Mall", "products" : 30});
+        this.data.push({"name" : "Kaufland Gheorgheni", "products" : 100});
+        this.data.push({"name" : "Carefour Vivo", "products" : 100});
     }
     refresh() {
         this.setState(prevState => {
@@ -88,7 +89,7 @@ export default class HomeScreen extends React.Component {
                     count++;
                 }
             }
-            this.data.push({"name": name, "prod": count});
+            this.data.push({"name": name, "products": count});
         }
     }
 
@@ -120,7 +121,7 @@ export default class HomeScreen extends React.Component {
                 <Pie
                     data={this.data}
                     options={this.options}
-                    accessorKey="population" />
+                    accessorKey="products" />
             </View>
         )
     }
