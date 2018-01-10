@@ -14,7 +14,7 @@ import com.example.ioana.budgetapplication.model.User;
  * Created by Ioana on 05/12/2017.
  */
 
-@Database(entities = {User.class, Product.class, Supermarket.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Product.class, Supermarket.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 

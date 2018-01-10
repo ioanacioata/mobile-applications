@@ -43,7 +43,6 @@ export default class StorageHelper {
 
     async addItem(item) {
         try {
-            //console.error({"item": item, "idList": this.getIds()});
             await  AsyncStorage.setItem(JSON.stringify(item.id.toString()), JSON.stringify(item));
             await AsyncStorage.setItem("productsList", JSON.stringify(this.getIds()));
         } catch (err) {

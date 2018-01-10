@@ -40,7 +40,6 @@ export default class SeeItemScreen extends React.Component {
                 global.products[i] = item;
             }
         }
-
         this.storageHelper.addItem(item);
         this.props.navigation.state.params.refreshFunction();
         this.props.navigation.goBack();
@@ -83,12 +82,9 @@ export default class SeeItemScreen extends React.Component {
                 <Picker
                     selectedValue={this.state.supermarket}
                     onValueChange={(itemValue, itemIndex) => this.setState({supermarket: itemValue})}>
-                    <Picker.Item label={"nume1"} value={"nume1"} key={"nume1"}/>
-                    <Picker.Item label={"nume2"} value={"nume2"} key={"nume2"}/>
-                    <Picker.Item label={"nume3"} value={"nume3"} key={"nume3"}/>
-                    {/*{global.supermarkets.map((t, i) => {*/}
-                    {/*return <Picker.Item label={t.name} value={t.name} key={t.name}/>*/}
-                    {/*})}*/}
+                    {global.supermarkets.map((t, i) => {
+                        return <Picker.Item label={t.name} value={t.name} key={t.name}/>
+                    })}
                 </Picker>
                 <Text>Brand:</Text>
                 <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>

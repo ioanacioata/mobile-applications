@@ -67,11 +67,12 @@ export default class HomeScreen extends React.Component {
         };
     }
 
-    getChartData(){
-        this.data.push({ "name" : "Type1", "population" : 50});
-        this.data.push({"name" : "Type2", "population" : 30});
-        this.data.push({"name" : "Type3", "population" : 100});
+    getChartData() {
+        this.data.push({"name": "Type1", "prod": 50});
+        this.data.push({"name": "Type2", "prod": 40});
+        this.data.push({"name": "Type3", "prod": 10});
     }
+
     refresh() {
         this.setState(prevState => {
             return Object.assign({}, prevState, {dataSource: dataSource.cloneWithRows(global.products)});
@@ -79,21 +80,9 @@ export default class HomeScreen extends React.Component {
         });
     }
 
-    populateChartData() {
-        for (var i = 0; i < global.supermarkets.length; i++) {
-            var name = global.supermarkets[i];
-            var count = 0;
-            for (var j = 0; j < global.products.length; j++) {
-                if (global.products[j].supermarket === name) {
-                    count++;
-                }
-            }
-            this.data.push({"name": name, "prod": count});
-        }
-    }
 
     edit(item) {
-        this.props.navigation.navigate("SeeItem", {refreshFunction: this.refresh.bind(this), item:item});
+        this.props.navigation.navigate("SeeItem", {refreshFunction: this.refresh.bind(this), item: item});
     }
 
     add() {
@@ -117,10 +106,10 @@ export default class HomeScreen extends React.Component {
                 <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
                 <Button title="Add" onPress={() => this.add()}/>
 
-                <Pie
-                    data={this.data}
-                    options={this.options}
-                    accessorKey="population" />
+                {/*<Pie*/}
+                    {/*data={this.data}*/}
+                    {/*options={this.options}*/}
+                    {/*accessorKey="prod"/>*/}
             </View>
         )
     }

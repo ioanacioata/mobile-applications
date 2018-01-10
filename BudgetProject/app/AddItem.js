@@ -4,7 +4,8 @@ import {
     TextInput,
     Button,
     Text,
-    Picker
+    Picker,
+    Alert
 } from 'react-native';
 import StorageHelper from "./storage/StorageHelper";
 
@@ -23,18 +24,7 @@ export default class AddItemScreen extends React.Component {
     }
 
     ok() {
-        // var found=0;
-        // var item = this.state;
-        // for (var i = 0; i < global.products.length; i++) {
-        //     if (global.products[i].id === item.id) {
-        //         alert("Can't add this!");
-        //         found =1;
-        //     }
-        // }
-        // if(found===1){
-        //     item.id=global.products[global.products.length-1].id+1;
-        //     global.products.push(item);
-        // }
+        //setting the id
         if (global.products.length > 0) {
             var id = global.products[global.products.length - 1].id + 1;
             this.state.id = id;
@@ -43,20 +33,32 @@ export default class AddItemScreen extends React.Component {
             var id = 1;
         }
         this.state.id = id;
-        var elem = {
-            id: this.state.id,
-            name: this.state.name,
-            brand: this.state.brand,
-            supermarket: this.state.supermarket,
-            price: this.state.price
-        };
-        global.products.push(elem);
-        this.storageHelper.addItem(elem);
-        // console.error(this.props.navigation.params);
 
-        this.props.navigation.state.params.refreshFunction();
-        this.props.navigation.goBack();
+        //adding the element
+        var elem = this.state;
+        //verify if exists already
+        var found = false;
+        for (var i = 0; i < global.products.length; i++) {
+            if (global.products[i].name === elem.name && elem.supermarket === global.products[i].supermarket) {
+                found = true;
+            }
+        }
+        if (found === false) {
+            global.products.push(elem);
+            this.storageHelper.addItem(elem);
+            // console.error(this.props.navigation.params);
 
+            this.props.navigation.state.params.refreshFunction();
+            this.props.navigation.goBack();
+        }
+        else {
+            Alert.alert("The product with the same name from the same supermarket already exists! Can't be added", "", [{
+                text: "ok", onPress: () => {
+                    this.props.navigation.state.params.refreshFunction();
+                    this.props.navigation.goBack();
+                }
+            }], {cancelable: true});
+        }
     }
 
     render() {
@@ -71,12 +73,9 @@ export default class AddItemScreen extends React.Component {
                 <Picker
                     selectedValue={this.state.supermarket}
                     onValueChange={(itemValue, itemIndex) => this.setState({supermarket: itemValue})}>
-                    <Picker.Item label={"nume1"} value={"nume1"} key={"nume1"}/>
-                    <Picker.Item label={"nume2"} value={"nume2"} key={"nume2"}/>
-                    <Picker.Item label={"nume3"} value={"nume3"} key={"nume3"}/>
-                    {/*{global.supermarkets.map((t, i) => {*/}
-                    {/*return <Picker.Item label={t.name} value={t.name} key={t.name}/>*/}
-                    {/*})}*/}
+                    {global.supermarkets.map((t, i) => {
+                    return <Picker.Item label={t.name} value={t.name} key={t.name}/>
+                    })}
                 </Picker>
                 <Text>Brand:</Text>
                 <TextInput onChangeText={(brand) => this.setState({brand})} value={this.state.brand}/>

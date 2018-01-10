@@ -1,11 +1,8 @@
 package com.example.ioana.budgetapplication.ui;
 
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,27 +10,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.model.Supermarket;
 import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.config.AppDatabase;
 import com.example.ioana.budgetapplication.model.Product;
-import com.example.ioana.budgetapplication.model.User;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_graph, null);
+
+                initializeList();
 
                 //Get data for the list
                 final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
@@ -149,9 +138,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeList() {
         String name = "Auchan Iulius Mall";
-        Supermarket s = new Supermarket(name, "str Alexandru Vaida Voievod");
+        Supermarket s = new Supermarket(name, "Gheorgheni");
         String kaufland = "Kaufland";
-        Supermarket s1 = new Supermarket(kaufland, "str Alexandru Vaida Voievod");
+        Supermarket s1 = new Supermarket(kaufland, "Gheorgheni");
         final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
         db.supermarketDao().insert(s);
         db.supermarketDao().insert(s1);
