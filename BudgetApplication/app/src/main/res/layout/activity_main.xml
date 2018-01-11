@@ -35,6 +35,8 @@
             android:background="@color/colorPrimary"
             android:text="@string/add"
             android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:visibility="visible"
             tools:layout_editor_absoluteX="47dp"
             tools:layout_editor_absoluteY="0dp" />
@@ -46,8 +48,10 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:background="@android:color/holo_orange_light"
-            android:text="show chart"
+            android:text="Show Chart"
             android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:visibility="visible"
             tools:layout_editor_absoluteX="47dp"
             tools:layout_editor_absoluteY="0dp" />

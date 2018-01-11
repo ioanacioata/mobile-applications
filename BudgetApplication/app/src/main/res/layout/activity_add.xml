@@ -82,7 +82,10 @@
             android:layout_gravity="center_horizontal"
             android:text="Save"
             android:background="@android:color/holo_red_dark"
-            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
+            android:padding="15dp"
             android:layout_margin="10dp"/>
 
         <Button
@@ -90,8 +93,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="bottom"
-            android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
+            android:padding="15dp"
             android:text="Add Supermarket"/>
 
 </LinearLayout>
