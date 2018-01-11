@@ -52,8 +52,11 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginRight="2dp"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="15dp"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="Save" />
@@ -65,8 +68,11 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="2dp"
-            android:textColor="@android:color/white"
-            android:background="@color/colorAccent"
+            android:background="@android:color/holo_blue_dark"
+            android:padding="15dp"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
             android:text="Cancel" />
     </LinearLayout>
 

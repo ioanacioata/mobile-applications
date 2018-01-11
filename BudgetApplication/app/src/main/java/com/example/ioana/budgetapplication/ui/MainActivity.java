@@ -1,16 +1,25 @@
 package com.example.ioana.budgetapplication.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.ioana.budgetapplication.model.Supermarket;
 import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
 import com.example.ioana.budgetapplication.R;
@@ -21,11 +30,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = MainActivity.class.getName();
     public static final int REQUEST_CODE = 1;
     private static final int REQUEST_CODE_ADD = 2;
@@ -36,69 +47,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        initializeList();
+        //initializeList();
 
-        listView = (ListView) findViewById(R.id.productList);
+        listView =  findViewById(R.id.productList);
         displayListWithAction();
-        addActionToAddButton();
-        addActionToButtonShowChart();
-    }
+        findViewById(R.id.buttonAdd).setOnClickListener(this);
+        findViewById(R.id.showChart).setOnClickListener(this);
 
-    private void addActionToButtonShowChart() {
-        Button showChart = findViewById(R.id.showChart);
-        showChart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.dialog_graph, null);
-
-                initializeList();
-
-                //Get data for the list
-                final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-                List<Supermarket> supermarketList = db.supermarketDao().loadAll();
-
-                //Populating a list of pieEntries
-                Log.i(TAG, "count of " + supermarketList.get(0).getName() + " is " + db.productDao().countProducts(supermarketList.get(0).getId()));
-
-                List<PieEntry> pieEntries = new ArrayList<>();
-                for (int i = 0; i < supermarketList.size(); i++) {
-                    pieEntries.add(new PieEntry(db.productDao().countProducts(supermarketList.get(i).getId()), supermarketList.get(i).getName()));
-                }
-
-                PieDataSet dataSet = new PieDataSet(pieEntries, "Supermarkets in Cluj-Napoca");
-                dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                dataSet.setSliceSpace(2);
-                dataSet.setValueTextSize(12);
-
-                PieData data = new PieData(dataSet);
-
-                //get the Chart
-                final PieChart pieChart = mView.findViewById(R.id.pieChart);
-                pieChart.setRotationEnabled(true);
-                pieChart.setData(data);
-                pieChart.invalidate();
-
-                pieChart.animateY(1000);
-
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-                dialog.show();
-            }
-        });
-    }
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-    private void addActionToAddButton() {
-        Button addButton = (Button) findViewById(R.id.buttonAdd);
-        addButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "Add button pressed");
-                Intent intent = new Intent(MainActivity.this, AddActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_ADD);
-            }
-        });
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user.getPhotoUrl() != null) {
+            Glide.with(this)
+                    .load(user.getPhotoUrl().toString())
+                    .into((ImageView) findViewById(R.id.toolbarPicture));
+        }
+        if (user.getDisplayName() != null) {
+            TextView name = findViewById(R.id.toolbarName);
+            name.setText(user.getDisplayName());
+        }
     }
 
 
@@ -136,6 +106,95 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buttonAdd:
+                Log.i(TAG, "Add button pressed");
+                Intent intent = new Intent(MainActivity.this, AddActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ADD);
+                break;
+            case R.id.showChart:
+                addActionToButtonShowChart();
+                break;
+        }
+    }
+
+    private void addActionToButtonShowChart() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_graph, null);
+
+
+        //Get data for the list
+        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+        List<Supermarket> supermarketList = db.supermarketDao().loadAll();
+
+        //Populating a list of pieEntries
+        Log.i(TAG, "count of " + supermarketList.get(0).getName() + " is " + db.productDao().countProducts(supermarketList.get(0).getId()));
+
+        List<PieEntry> pieEntries = new ArrayList<>();
+        for (int i = 0; i < supermarketList.size(); i++) {
+            pieEntries.add(new PieEntry(db.productDao().countProducts(supermarketList.get(i).getId()), supermarketList.get(i).getName()));
+        }
+
+        PieDataSet dataSet = new PieDataSet(pieEntries, "Supermarkets in Cluj-Napoca");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setSliceSpace(2);
+        dataSet.setValueTextSize(12);
+
+        PieData data = new PieData(dataSet);
+
+        //get the Chart
+        final PieChart pieChart = mView.findViewById(R.id.pieChart);
+        pieChart.setRotationEnabled(true);
+        pieChart.setData(data);
+        pieChart.invalidate();
+
+        pieChart.animateY(1000);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+        return true;
+    }
+
+    /**
+     * Set menu options
+     *
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuLogout:
+                FirebaseAuth.getInstance().signOut();
+                finish();
+                startActivity(new Intent(this, LoginActivity.class));
+                break;
+            case R.id.menuHome:
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.menuProfile:
+                finish();
+                startActivity(new Intent(this, ProfileActivity.class));
+                break;
+        }
+
+        return true;
+    }
+
     private void initializeList() {
         String name = "Auchan Iulius Mall";
         Supermarket s = new Supermarket(name, "Gheorgheni");
@@ -155,5 +214,4 @@ public class MainActivity extends AppCompatActivity {
         db.productDao().insert(p3);
 
     }
-
 }

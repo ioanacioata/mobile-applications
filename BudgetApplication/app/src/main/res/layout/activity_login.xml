@@ -36,49 +36,49 @@
             android:paddingRight="15dp">
 
             <EditText
-                android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="password"
-                android:inputType="textPassword"
-                android:padding="15dp" />
-
-            <EditText
-                android:id="@+id/emailEditText"
+                android:id="@+id/emailEditTextLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="email"
                 android:inputType="textEmailAddress"
                 android:padding="15dp" />
 
+            <EditText
+                android:id="@+id/passwordEditTextLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="password"
+                android:inputType="textPassword"
+                android:padding="15dp" />
+
             <Button
                 android:id="@+id/buttonLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_dark"
-                android:textColor="@color/white"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:padding="15dp"
                 android:layout_margin="5dp"
+                android:background="@android:color/holo_blue_dark"
+                android:padding="15dp"
                 android:text="@string/login"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/buttonStartSignUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_dark"
-                android:textColor="@color/white"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:padding="15dp"
                 android:layout_margin="5dp"
+                android:background="@android:color/holo_blue_dark"
+                android:padding="15dp"
                 android:text="@string/signup"
-                android:textAllCaps="false" />
+                android:textAllCaps="false"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/white" />
         </LinearLayout>
 
 
         <ProgressBar
-            android:id="@+id/progressbar"
+            android:id="@+id/progressbarLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

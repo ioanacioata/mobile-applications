@@ -4,100 +4,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
     android:layout_margin="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
     tools:context="com.example.ioana.budgetapplication.ui.AddActivity">
 
 
-        <TextView
-            android:id="@+id/addProductNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name:"
-            android:textAlignment="center" />
+    <TextView
+        android:id="@+id/addProductNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textAlignment="center" />
 
-        <EditText
-            android:id="@+id/nameToAddEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:selectAllOnFocus="false"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/nameToAddEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:selectAllOnFocus="false"
+        android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/addProductPriceTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Price:"
-            android:textAlignment="center" />
+    <TextView
+        android:id="@+id/addProductPriceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Price:"
+        android:textAlignment="center" />
 
-        <EditText
-            android:id="@+id/priceToAddEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:inputType="numberDecimal"
-            android:selectAllOnFocus="false"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/priceToAddEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="false"
+        android:textAlignment="center" />
 
-        <TextView
-            android:id="@+id/addProductSupermarketTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Supermarket :"
-            android:textAlignment="center" />
+    <TextView
+        android:id="@+id/addProductSupermarketTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Supermarket :"
+        android:textAlignment="center" />
 
-        <Spinner
-            android:id="@+id/supermarketToAddSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/supermarketToAddSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/addProductBrandTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Brand:"
-            android:textAlignment="center" />
+    <TextView
+        android:id="@+id/addProductBrandTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Brand:"
+        android:textAlignment="center" />
 
-        <EditText
-            android:id="@+id/brandToAddEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/editbox_background"
-            android:selectAllOnFocus="false"
-            android:textAlignment="center" />
+    <EditText
+        android:id="@+id/brandToAddEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:selectAllOnFocus="false"
+        android:textAlignment="center" />
 
-        <ImageView
-            android:id="@+id/addProductImageView"
-            android:layout_width="match_parent"
-            android:layout_height="155dp"
-            app:srcCompat="@drawable/cola5" />
+    <ImageView
+        android:id="@+id/addProductImageView"
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        app:srcCompat="@drawable/cola5" />
 
-        <Button
-            android:id="@+id/saveButtonAddWindow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Save"
-            android:background="@android:color/holo_red_dark"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/white"
-            android:padding="15dp"
-            android:layout_margin="10dp"/>
+    <Button
+        android:id="@+id/saveButtonAddWindow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/holo_blue_dark"
+        android:padding="15dp"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/addSupermarketButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:background="@color/colorPrimary"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:textColor="@color/white"
-            android:padding="15dp"
-            android:text="Add Supermarket"/>
+    <Button
+        android:id="@+id/addSupermarketButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="bottom"
+        android:padding="15dp"
+        android:text="Add Supermarket"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white" />
 
 </LinearLayout>
