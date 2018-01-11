@@ -28,3 +28,7 @@ The user can share the details of a product at a certain store, or can share a s
 
 ## Others
 Animations will be present for transitions between pages.
+
+
+# Used Links
+https://www.youtube.com/watch?v=mF5MWLsb4cg Tutorial for firebase Authentification
