@@ -12,7 +12,7 @@ public class MyDatabase {
     public static FirebaseDatabase getDatabase() {
         if(database==null){
             database=FirebaseDatabase.getInstance();
-            database.setPersistenceEnabled(true); //offline data
+//            database.setPersistenceEnabled(true); //offline data
         }
         return database;
     }

@@ -1,26 +1,18 @@
 package com.example.ioana.budgetapplication.ui;
 
-import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.R;
-import com.example.ioana.budgetapplication.config.AppDatabase;
 import com.example.ioana.budgetapplication.model.Product;
-import com.example.ioana.budgetapplication.model.Supermarket;
-
-import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
     public static final String TAG = DetailsActivity.class.getName();
@@ -51,7 +43,7 @@ public class DetailsActivity extends AppCompatActivity {
         brandEditText.setText(p.getBrand());
         populateSupermarketSpinner();
         imageView.setImageResource(p.getImagePath());
-
+/*
         //add actions for buttons
         Button okButton = (Button) findViewById(R.id.okButton);
         okButton.setOnClickListener(new Button.OnClickListener() {
@@ -74,7 +66,7 @@ public class DetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+*/
         Button sendButton = (Button) findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -91,7 +83,7 @@ public class DetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+/*
         Button deleteButton = findViewById(R.id.deleteButton);
         deleteButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -113,10 +105,11 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+        */
     }
 
     private void populateSupermarketSpinner() {
-        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+    /*    final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
         List<String> spinnerList = db.supermarketDao().getAllNames();
 
         Log.i(TAG, spinnerList.get(0) + " is first elem and size is " + spinnerList.size());
@@ -133,8 +126,9 @@ public class DetailsActivity extends AppCompatActivity {
             int spinnerPosition = arrayAdapter.getPosition(compareValue);
             supermarketSpinner.setSelection(spinnerPosition);
         }
+        */
     }
-
+/*
     private Supermarket getSupermarketById(int id) {
         Log.i(TAG, " id " + id);
         final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
@@ -145,4 +139,6 @@ public class DetailsActivity extends AppCompatActivity {
         final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
         return db.supermarketDao().findByName(name);
     }
+    */
+
 }

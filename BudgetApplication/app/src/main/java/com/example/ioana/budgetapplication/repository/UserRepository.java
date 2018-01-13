@@ -44,9 +44,7 @@ public class UserRepository {
         return reference.child(id).child("role").equals(Role.ADMIN.toString());
     }
 
-
     public void makeAdmin(User user) {
         reference.child(user.getId()).child("role").setValue(Role.ADMIN);
     }
-
 }

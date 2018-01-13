@@ -1,7 +1,6 @@
 package com.example.ioana.budgetapplication.ui;
 
 import android.app.AlertDialog;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,11 +18,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.ioana.budgetapplication.config.MyDatabase;
 import com.example.ioana.budgetapplication.model.Role;
-import com.example.ioana.budgetapplication.model.Supermarket;
+import com.example.ioana.budgetapplication.model.Shop;
 import com.example.ioana.budgetapplication.model.User;
 import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
 import com.example.ioana.budgetapplication.R;
-import com.example.ioana.budgetapplication.config.AppDatabase;
 import com.example.ioana.budgetapplication.model.Product;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -35,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -47,12 +46,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView listView;
     ProductListAdapter productListAdapter;
     User currentUser;
+    List<Product> products;
+    DatabaseReference productsRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        initializeList();
+
+        products = new ArrayList<>();
+        productsRef = FirebaseDatabase.getInstance().getReference("products");
+        productsRef.keepSynced(true);
 
         listView = findViewById(R.id.productList);
         displayListWithAction();
@@ -81,8 +87,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart() {
         super.onStart();
-        DatabaseReference ref = MyDatabase.getDatabase().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        //load role of current user and modify interface accordingly
+        DatabaseReference currentUserRef = MyDatabase.getDatabase().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        currentUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //getting the current user and its role
@@ -94,6 +101,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     findViewById(R.id.toolbarRole).setVisibility(View.GONE);
                     findViewById(R.id.showUsers).setVisibility(View.GONE);
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //load the list of products
+        productsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                products.clear();
+                //load the products from the database
+                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                    Product product = d.getValue(Product.class);
+                    products.add(product);
+                }
+
+                productListAdapter = new ProductListAdapter(products, getLayoutInflater());
+                listView.setAdapter(productListAdapter);
             }
 
             @Override
@@ -117,10 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void displayListWithAction() {
-        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-        final List<Product> products = db.productDao().loadAll();
-        productListAdapter = new ProductListAdapter(products, getLayoutInflater());
-        listView.setAdapter(productListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -134,10 +158,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        productListAdapter.notifyDataSetChanged();
+        //productListAdapter.notifyDataSetChanged();
 
     }
-
 
     @Override
     public void onClick(View v) {
@@ -162,15 +185,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View mView = getLayoutInflater().inflate(R.layout.dialog_graph, null);
 
         //Get data for the list
-        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-        List<Supermarket> supermarketList = db.supermarketDao().loadAll();
+//        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+//        List<Supermarket> supermarketList = db.supermarketDao().loadAll();
 
+        //todo redo the chart data
         //Populating a list of pieEntries
-        Log.i(TAG, "count of " + supermarketList.get(0).getName() + " is " + db.productDao().countProducts(supermarketList.get(0).getId()));
+//        Log.i(TAG, "count of " + supermarketList.get(0).getName() + " is " + products.countProducts(supermarketList.get(0).getId()));
 
         List<PieEntry> pieEntries = new ArrayList<>();
-        for (int i = 0; i < supermarketList.size(); i++) {
-            pieEntries.add(new PieEntry(db.productDao().countProducts(supermarketList.get(i).getId()), supermarketList.get(i).getName()));
+        for (int i = 0; i < Shop.values().length; i++) {
+//            pieEntries.add(new PieEntry(db.productDao().countProducts(supermarketList.get(i).getId()), supermarketList.get(i).getName()));
+            pieEntries.add(new PieEntry(i+1, Shop.values()[i].toString()));
         }
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Supermarkets in Cluj-Napoca");
@@ -227,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    /*
     private void initializeList() {
         String name = "Auchan Iulius Mall";
         Supermarket s = new Supermarket(name, "Gheorgheni");
@@ -245,4 +271,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.productDao().insert(p2);
         db.productDao().insert(p3);
     }
+    */
 }

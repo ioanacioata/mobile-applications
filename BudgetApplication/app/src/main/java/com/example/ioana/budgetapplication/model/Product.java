@@ -14,43 +14,40 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
  * Created by Ioana on 08/11/2017.
  */
 
-@Entity(foreignKeys = @ForeignKey(entity = Supermarket.class,
-        parentColumns = "id",
-        childColumns = "supermarketId",
-        onDelete = CASCADE))
 public class Product implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    @NonNull
+    private String id;
     private String name;
     private Double price;
-    private int supermarketId;
+    //private int supermarketId;
+    private Shop shop;
     private String brand;
     private int imagePath;
 
-    public Product(int id, @NonNull String name, Double price, int supermarketId, String brand, int imagePath) {
+    public Product(String id, String name, Double price, Shop shop, String brand, int imagePath) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.supermarketId = supermarketId;
+        this.shop = shop;
         this.brand = brand;
         this.imagePath = imagePath;
     }
 
-    @Ignore
-    public Product(String name, Double price, int supermarketId, String brand, int imagePath) {
+    public Product() {
+    }
+
+    public Product(String name, Double price, Shop shop, String brand, int imagePath) {
         this.name = name;
         this.price = price;
-        this.supermarketId = supermarketId;
+        this.shop = shop;
         this.brand = brand;
         this.imagePath = imagePath;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -74,14 +71,13 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public int getSupermarketId() {
-        return supermarketId;
+    public Shop getShop() {
+        return shop;
     }
 
-    public void setSupermarketId(int supermarketId) {
-        this.supermarketId = supermarketId;
+    public void setShop(Shop shop) {
+        this.shop = shop;
     }
-
 
     public String getBrand() {
         return brand;
@@ -89,11 +85,6 @@ public class Product implements Serializable {
 
     public void setBrand(String brand) {
         this.brand = brand;
-    }
-
-    @Ignore
-    public Product(int imagePath) {
-        this.imagePath = imagePath;
     }
 
     public int getImagePath() {
@@ -106,7 +97,8 @@ public class Product implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                ", supermarketId=" + supermarketId +
+                // ", supermarketId=" + supermarketId +
+                ", shop=" + shop.toString() +
                 ", brand='" + brand + '\'' +
                 ", imagePath=" + imagePath +
                 '}';
