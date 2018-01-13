@@ -98,7 +98,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         Log.d("SIGN UP ", " before is admin call");
                         Log.d("SIGNUP :","IS ADMINNNNN "+userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
                         finish();
-                        startActivity(new Intent(SignUpActivity.this, AdminMainActivity.class));
+                        startActivity(new Intent(SignUpActivity.this, UsersActivity.class));
                     }
                     else{
                         //add the user to the users table, with the role USER

@@ -6,15 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.R;
-import com.example.ioana.budgetapplication.model.Product;
+import com.example.ioana.budgetapplication.model.Role;
 import com.example.ioana.budgetapplication.model.User;
 import com.example.ioana.budgetapplication.repository.UserRepository;
-import com.example.ioana.budgetapplication.ui.AdminMainActivity;
 
 import java.util.List;
 
@@ -57,14 +55,23 @@ public class UserListAdapter extends BaseAdapter {
         final String email = users.get(position).getEmail();
         textView.setText(email);
         final Button btn = convertView.findViewById(R.id.buttonMakeAdmin);
+        if(users.get(position).getRole().equals(Role.ADMIN)){
+            btn.setBackgroundColor(Color.DKGRAY);
+        }
         final View finalConvertView = convertView;
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserRepository userRepository = new UserRepository();
-                userRepository.makeAdmin(users.get(position));
-                Toast.makeText(finalConvertView.getContext(), "User " + users.get(position).getEmail() + " is now ADMIN!", Toast.LENGTH_SHORT).show();
-                btn.setBackgroundColor(Color.DKGRAY);
+                if(users.get(position).getRole().equals(Role.ADMIN)){
+                    Toast.makeText(finalConvertView.getContext(), "User " + users.get(position).getEmail() + " is already ADMIN!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    userRepository.makeAdmin(users.get(position));
+                    Toast.makeText(finalConvertView.getContext(), "User " + users.get(position).getEmail() + " is now ADMIN!", Toast.LENGTH_SHORT).show();
+                    btn.setBackgroundColor(Color.DKGRAY);
+                }
+
             }
         });
         return convertView;

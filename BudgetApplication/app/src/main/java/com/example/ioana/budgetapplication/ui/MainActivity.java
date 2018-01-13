@@ -1,6 +1,5 @@
 package com.example.ioana.budgetapplication.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
@@ -13,14 +12,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.ioana.budgetapplication.config.MyDatabase;
+import com.example.ioana.budgetapplication.model.Role;
 import com.example.ioana.budgetapplication.model.Supermarket;
+import com.example.ioana.budgetapplication.model.User;
 import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.config.AppDatabase;
@@ -32,6 +32,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_CODE_ADD = 2;
     ListView listView;
     ProductListAdapter productListAdapter;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +54,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 //        initializeList();
 
-        listView =  findViewById(R.id.productList);
+        listView = findViewById(R.id.productList);
         displayListWithAction();
         findViewById(R.id.buttonAdd).setOnClickListener(this);
         findViewById(R.id.showChart).setOnClickListener(this);
+        findViewById(R.id.showUsers).setOnClickListener(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,6 +75,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TextView name = findViewById(R.id.toolbarName);
             name.setText(user.getDisplayName());
         }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        DatabaseReference ref = MyDatabase.getDatabase().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //getting the current user and its role
+                currentUser = dataSnapshot.getValue(User.class);
+                if (currentUser.getRole().equals(Role.ADMIN)) {
+                    findViewById(R.id.toolbarRole).setVisibility(View.VISIBLE);
+                    findViewById(R.id.showUsers).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.toolbarRole).setVisibility(View.GONE);
+                    findViewById(R.id.showUsers).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -118,13 +150,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.showChart:
                 addActionToButtonShowChart();
                 break;
+            case R.id.showUsers:
+                finish();
+                startActivity(new Intent(MainActivity.this, UsersActivity.class));
+                break;
         }
     }
 
     private void addActionToButtonShowChart() {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_graph, null);
-
 
         //Get data for the list
         final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
@@ -163,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
-
         return true;
     }
 
@@ -190,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
         }
-
         return true;
     }
 
@@ -211,6 +244,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         db.productDao().insert(p1);
         db.productDao().insert(p2);
         db.productDao().insert(p3);
-
     }
 }

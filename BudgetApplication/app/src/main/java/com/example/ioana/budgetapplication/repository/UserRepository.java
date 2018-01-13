@@ -23,7 +23,6 @@ public class UserRepository {
 
     public UserRepository() {
         reference = MyDatabase.getDatabase().getReference("users");
-        reference.keepSynced(true);
     }
 
     public DatabaseReference getReference() {
@@ -42,7 +41,7 @@ public class UserRepository {
 
     public boolean isAdmin(String id) {
         Log.d("is admin reff ", String.valueOf(reference.child(id).getRef()));
-        return reference.child(id).child("role").getRef().equals(Role.ADMIN.toString());
+        return reference.child(id).child("role").equals(Role.ADMIN.toString());
     }
 
 

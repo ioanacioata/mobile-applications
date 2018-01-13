@@ -10,4 +10,5 @@
     <item
         android:id="@+id/menuProfile"
         android:title="MyProfile" />
+
 </menu>

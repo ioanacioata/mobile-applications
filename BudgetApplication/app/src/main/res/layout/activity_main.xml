@@ -36,6 +36,17 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/white"
                 android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/toolbarRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="(admin)"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@android:color/white"
+                android:textSize="10dp" />
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -79,6 +90,21 @@
             android:layout_weight="1"
             android:background="@android:color/holo_orange_light"
             android:text="Show Chart"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="47dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <Button
+            android:id="@+id/showUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/holo_purple"
+            android:text="Manage Users"
             android:textAllCaps="false"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"

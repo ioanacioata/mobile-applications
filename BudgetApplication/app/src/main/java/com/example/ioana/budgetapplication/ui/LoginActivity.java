@@ -97,8 +97,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     finish();
-//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+//                    Intent intent = new Intent(LoginActivity.this, UsersActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {

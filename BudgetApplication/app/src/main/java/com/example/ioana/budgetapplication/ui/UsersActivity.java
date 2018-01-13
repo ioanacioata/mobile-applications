@@ -7,18 +7,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.ioana.budgetapplication.R;
-import com.example.ioana.budgetapplication.config.MyDatabase;
-import com.example.ioana.budgetapplication.model.Product;
 import com.example.ioana.budgetapplication.model.User;
 import com.example.ioana.budgetapplication.repository.UserRepository;
-import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
 import com.example.ioana.budgetapplication.ui.adapter.UserListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminMainActivity extends AppCompatActivity {
+public class UsersActivity extends AppCompatActivity {
     ListView listView;
     UserListAdapter userListAdapter;
     UserRepository userRepository;
@@ -42,7 +38,7 @@ public class AdminMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_main);
+        setContentView(R.layout.activity_users);
 
         users = new ArrayList<>();
 
@@ -123,7 +119,6 @@ public class AdminMainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
         }
-
         return true;
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.ioana.budgetapplication.ui.AdminMainActivity"
+    tools:context="com.example.ioana.budgetapplication.ui.UsersActivity"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -46,7 +46,7 @@
                 android:text="(admin)"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textColor="@android:color/white"
-                android:textSize="10dp" />
+                android:textSize="10dp"/>
         </LinearLayout>
 
     </android.support.v7.widget.Toolbar>
