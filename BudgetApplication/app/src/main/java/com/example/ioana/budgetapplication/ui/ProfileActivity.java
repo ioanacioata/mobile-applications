@@ -44,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     EditText editTextName;
     ImageView imageView;
-    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

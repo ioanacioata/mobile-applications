@@ -92,20 +92,19 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    if(email.equals("admin@budgetapp.com")){
+                    if (email.equals("admin@budgetapp.com")) {
                         //hardcoded admin
-                        userRepository.addAdmin(mAuth.getCurrentUser().getUid(),email);
+                        userRepository.addAdmin(mAuth.getCurrentUser().getUid(), email);
                         Log.d("SIGN UP ", " before is admin call");
-                        Log.d("SIGNUP :","IS ADMINNNNN "+userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
+                        Log.d("SIGNUP :", "IS ADMINNNNN " + userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
                         finish();
                         startActivity(new Intent(SignUpActivity.this, UsersActivity.class));
-                    }
-                    else{
+                    } else {
                         //add the user to the users table, with the role USER
-                        userRepository.addUser(mAuth.getCurrentUser().getUid(),email);
+                        userRepository.addUser(mAuth.getCurrentUser().getUid(), email);
                         Log.e("SIGN UP ", " before is admin call");
 
-                        Log.e("SIGNUP :","IS ADMINNNNN "+userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
+                        Log.e("SIGNUP :", "IS ADMINNNNN " + userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
                         finish();
                         startActivity(new Intent(SignUpActivity.this, ProfileActivity.class));
                     }

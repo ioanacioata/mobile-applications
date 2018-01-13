@@ -15,8 +15,6 @@ import android.widget.Spinner;
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.model.Product;
 import com.example.ioana.budgetapplication.model.Shop;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,17 +44,10 @@ public class AddActivity extends AppCompatActivity {
         imageView.setImageResource(R.drawable.noimage);
 
         //populate spinner
-        List<Shop> shopList = Arrays.asList(Shop.values());
-        List<String> spinnerList = new ArrayList<>();
-        for (Shop s : shopList) {
-            spinnerList.add(s.toString());
-        }
-        Log.i(TAG, spinnerList.get(0) + " is first elem and size is " + spinnerList.size());
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerList);
-        supermarketSpinner.setAdapter(arrayAdapter);
+        populateSpinner();
 
         //add actions to button SAVE
-        Button saveButton = (Button) findViewById(R.id.saveButtonAddWindow);
+        Button saveButton = findViewById(R.id.saveButtonAddWindow);
         saveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,13 +57,8 @@ public class AddActivity extends AppCompatActivity {
                 Shop shop = Shop.valueOf(supermarketSpinner.getSelectedItem().toString());
 
                 Product resultProd = new Product(name, price, shop, brand, R.drawable.noimage);
-                //todo insert product
-                //db.productDao().insert(resultProd);
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("products");
-                String id = ref.push().getKey();
-                resultProd.setId(id);
-                ref.child(id).setValue(resultProd);
-
+                // insert the product
+                MainActivity.productRepository.add(resultProd);
 
                 Log.i(TAG, "name: " + resultProd.getName());
                 Intent intent = new Intent(AddActivity.this, MainActivity.class);
@@ -81,6 +67,17 @@ public class AddActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void populateSpinner() {
+        List<Shop> shopList = Arrays.asList(Shop.values());
+        List<String> spinnerList = new ArrayList<>();
+        for (Shop s : shopList) {
+            spinnerList.add(s.toString());
+        }
+        Log.i(TAG, spinnerList.get(0) + " is first elem and size is " + spinnerList.size());
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerList);
+        supermarketSpinner.setAdapter(arrayAdapter);
     }
 
 }

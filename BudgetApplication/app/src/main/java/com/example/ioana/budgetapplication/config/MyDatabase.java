@@ -10,9 +10,9 @@ public class MyDatabase {
     public static FirebaseDatabase database;
 
     public static FirebaseDatabase getDatabase() {
-        if(database==null){
-            database=FirebaseDatabase.getInstance();
-//            database.setPersistenceEnabled(true); //offline data
+        if (database == null) {
+            database = FirebaseDatabase.getInstance();
+            database.setPersistenceEnabled(true); // offline data
         }
         return database;
     }

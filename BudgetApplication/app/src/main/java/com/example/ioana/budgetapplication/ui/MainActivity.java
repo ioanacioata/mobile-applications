@@ -20,6 +20,7 @@ import com.example.ioana.budgetapplication.config.MyDatabase;
 import com.example.ioana.budgetapplication.model.Role;
 import com.example.ioana.budgetapplication.model.Shop;
 import com.example.ioana.budgetapplication.model.User;
+import com.example.ioana.budgetapplication.repository.ProductRepository;
 import com.example.ioana.budgetapplication.ui.adapter.ProductListAdapter;
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.model.Product;
@@ -33,7 +34,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -45,23 +45,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_CODE_ADD = 2;
     ListView listView;
     ProductListAdapter productListAdapter;
+
     User currentUser;
     List<Product> products;
     DatabaseReference productsRef;
-
+    public static ProductRepository productRepository = new ProductRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        initializeList();
 
         products = new ArrayList<>();
-        productsRef = FirebaseDatabase.getInstance().getReference("products");
+        productsRef = productRepository.getReference();
         productsRef.keepSynced(true);
 
         listView = findViewById(R.id.productList);
         displayListWithAction();
+
         findViewById(R.id.buttonAdd).setOnClickListener(this);
         findViewById(R.id.showChart).setOnClickListener(this);
         findViewById(R.id.showUsers).setOnClickListener(this);
@@ -158,8 +159,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        //productListAdapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -184,18 +183,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_graph, null);
 
-        //Get data for the list
-//        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-//        List<Supermarket> supermarketList = db.supermarketDao().loadAll();
-
-        //todo redo the chart data
-        //Populating a list of pieEntries
-//        Log.i(TAG, "count of " + supermarketList.get(0).getName() + " is " + products.countProducts(supermarketList.get(0).getId()));
-
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i = 0; i < Shop.values().length; i++) {
-//            pieEntries.add(new PieEntry(db.productDao().countProducts(supermarketList.get(i).getId()), supermarketList.get(i).getName()));
-            pieEntries.add(new PieEntry(i+1, Shop.values()[i].toString()));
+            Shop current = Shop.values()[i];
+            int count = 0;
+            for (Product p : products) {
+                if (p.getShop().equals(current)) {
+                    count++;
+                }
+            }
+            pieEntries.add(new PieEntry(count, current.toString()));
         }
 
         PieDataSet dataSet = new PieDataSet(pieEntries, "Supermarkets in Cluj-Napoca");
@@ -251,25 +248,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return true;
     }
-
-    /*
-    private void initializeList() {
-        String name = "Auchan Iulius Mall";
-        Supermarket s = new Supermarket(name, "Gheorgheni");
-        String kaufland = "Kaufland";
-        Supermarket s1 = new Supermarket(kaufland, "Gheorgheni");
-        final AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "budget").fallbackToDestructiveMigration().allowMainThreadQueries().build();
-        db.supermarketDao().insert(s);
-        db.supermarketDao().insert(s1);
-
-        int id = db.supermarketDao().findByName(name).getId();
-        int id2 = db.supermarketDao().findByName(kaufland).getId();
-        Product p1 = new Product("Coca-Cola 0.5l", 2.5, id, "Coca-Cola", R.drawable.cola5);
-        Product p2 = new Product("Lapte 1l", 4.0, id2, "Zuzu", R.drawable.zuzu1l);
-        Product p3 = new Product("Cafea 200 grame", 12.0, id, "Nescafe", R.drawable.nescafe);
-        db.productDao().insert(p1);
-        db.productDao().insert(p2);
-        db.productDao().insert(p3);
-    }
-    */
 }

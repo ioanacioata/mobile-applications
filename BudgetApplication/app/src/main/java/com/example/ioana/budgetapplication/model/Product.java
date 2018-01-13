@@ -1,14 +1,6 @@
 package com.example.ioana.budgetapplication.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
-
-import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
  * Created by Ioana on 08/11/2017.
@@ -18,19 +10,10 @@ public class Product implements Serializable {
     private String id;
     private String name;
     private Double price;
-    //private int supermarketId;
     private Shop shop;
     private String brand;
     private int imagePath;
 
-    public Product(String id, String name, Double price, Shop shop, String brand, int imagePath) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.shop = shop;
-        this.brand = brand;
-        this.imagePath = imagePath;
-    }
 
     public Product() {
     }
@@ -97,7 +80,6 @@ public class Product implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +
-                // ", supermarketId=" + supermarketId +
                 ", shop=" + shop.toString() +
                 ", brand='" + brand + '\'' +
                 ", imagePath=" + imagePath +
