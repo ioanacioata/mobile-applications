@@ -53,4 +53,6 @@ public class ProductListAdapter extends BaseAdapter {
         textView.setText(products.get(position).getName());
         return convertView;
     }
+
+
 }

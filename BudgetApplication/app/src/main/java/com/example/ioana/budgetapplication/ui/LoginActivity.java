@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth mAuth;
     EditText editTextEmail, editTextPassword;
@@ -30,8 +30,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
 
         editTextEmail = findViewById(R.id.emailEditTextLogin);
-        editTextPassword= findViewById(R.id.passwordEditTextLogin);
-        progressBar= findViewById(R.id.progressbarLogin);
+        editTextPassword = findViewById(R.id.passwordEditTextLogin);
+        progressBar = findViewById(R.id.progressbarLogin);
 
         findViewById(R.id.buttonStartSignUp).setOnClickListener(this);
         findViewById(R.id.buttonLogin).setOnClickListener(this);
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStart();
 
         //redirect to the application if user not null
-        if(mAuth.getCurrentUser()!=null){
+        if (mAuth.getCurrentUser() != null) {
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -50,12 +50,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.buttonStartSignUp:
                 finish();
                 startActivity(new Intent(this, SignUpActivity.class));
                 break;
-            case  R.id.buttonLogin:
+            case R.id.buttonLogin:
                 userLogin();
                 break;
         }
@@ -97,7 +97,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
                     finish();
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, AdminMainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                 } else {

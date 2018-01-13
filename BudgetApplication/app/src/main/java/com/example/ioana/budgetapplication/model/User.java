@@ -1,7 +1,5 @@
 package com.example.ioana.budgetapplication.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 
 import java.io.Serializable;
 
@@ -9,35 +7,24 @@ import java.io.Serializable;
  * Created by Ioana on 05/12/2017.
  */
 
-@Entity
 public class User implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private Integer id;
-    private String name;
-    private String email;
-    private String password;
 
-    public User(Integer id, String name, String email, String password) {
+    private String id;
+    private String email;
+    private Role role;
+
+    public User(String id, String email, Role role) {
         this.id = id;
-        this.name = name;
         this.email = email;
-        this.password = password;
+        this.role = role;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getEmail() {
@@ -48,11 +35,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public Role getRole() {
+        return role;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

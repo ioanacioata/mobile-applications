@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -11,18 +12,21 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.R;
+import com.example.ioana.budgetapplication.repository.UserRepository;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     EditText editTextEmail;
     EditText editTextPassword;
     ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
+
+    UserRepository userRepository = new UserRepository();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +34,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         setContentView(R.layout.activity_sign_up);
 
-        editTextEmail= findViewById(R.id.emailEditTextSignUp);
-        editTextPassword= findViewById(R.id.passwordEditTextSignUp);
+        editTextEmail = findViewById(R.id.emailEditTextSignUp);
+        editTextPassword = findViewById(R.id.passwordEditTextSignUp);
         progressBar = findViewById(R.id.progressbarSignUp);
 
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         findViewById(R.id.textViewBackToLogin).setOnClickListener(this);
         findViewById(R.id.buttonSignUp).setOnClickListener(this);
@@ -42,11 +46,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.buttonSignUp:
                 registerUser();
                 break;
-            case  R.id.textViewBackToLogin:
+            case R.id.textViewBackToLogin:
                 finish();
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
@@ -54,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void registerUser() {
-        String email = editTextEmail.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
         if (email.isEmpty()) {
@@ -88,8 +92,24 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             public void onComplete(@NonNull Task<AuthResult> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    finish();
-                    startActivity(new Intent(SignUpActivity.this, ProfileActivity.class));
+                    if(email.equals("admin@budgetapp.com")){
+                        //hardcoded admin
+                        userRepository.addAdmin(mAuth.getCurrentUser().getUid(),email);
+                        Log.d("SIGN UP ", " before is admin call");
+                        Log.d("SIGNUP :","IS ADMINNNNN "+userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
+                        finish();
+                        startActivity(new Intent(SignUpActivity.this, AdminMainActivity.class));
+                    }
+                    else{
+                        //add the user to the users table, with the role USER
+                        userRepository.addUser(mAuth.getCurrentUser().getUid(),email);
+                        Log.e("SIGN UP ", " before is admin call");
+
+                        Log.e("SIGNUP :","IS ADMINNNNN "+userRepository.isAdmin(mAuth.getCurrentUser().getUid()));
+                        finish();
+                        startActivity(new Intent(SignUpActivity.this, ProfileActivity.class));
+                    }
+
                 } else {
 
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
