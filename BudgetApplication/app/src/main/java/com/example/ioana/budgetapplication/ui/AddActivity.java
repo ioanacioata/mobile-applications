@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.ioana.budgetapplication.R;
 import com.example.ioana.budgetapplication.model.Product;
 import com.example.ioana.budgetapplication.model.Shop;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,6 +64,11 @@ public class AddActivity extends AppCompatActivity {
 
                 Log.i(TAG, "name: " + resultProd.getName());
                 Intent intent = new Intent(AddActivity.this, MainActivity.class);
+
+                //Notification part
+                String token = FirebaseInstanceId.getInstance().getToken();
+                Log.i("Modification ", "token: " + token);
+                Toast.makeText(AddActivity.this, token, Toast.LENGTH_SHORT).show();
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();
