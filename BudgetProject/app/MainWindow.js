@@ -10,27 +10,23 @@ import {
 
 import {Pie} from 'react-native-pathjs-charts';
 import StorageHelper from "./storage/StorageHelper";
+import ProductOperations from "./database/ProductOperations";
 
 var dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.storageHelper = new StorageHelper();
-        //AsyncStorage.setItem("productsList", JSON.stringify(["1", "2"]));
-        //AsyncStorage.removeItem("productsList");
-        // AsyncStorage.setItem("1", JSON.stringify({
-        //         id: 1,
-        //         name: 'Coca-Cola 0.5l',
-        //         price: 2.5,
-        //         supermarket: global.supermarkets[0],
-        //         brand: 'Coca-Cola'
-        //     }));
-        this.storageHelper.initArray().then(() => {
-            this.refresh()
-        }, () => {
-        });
+        // this.storageHelper = new StorageHelper();
 
+        this.prooductOperations = new ProductOperations();
+        // this.storageHelper.initArray().then(() => {
+        //     this.refresh()
+        // }, () => {
+        // });
+        // this.refresh();
+
+        global.products=this.prooductOperations.getAll();
         this.state = {
             dataSource: dataSource.cloneWithRows(global.products)
         };
@@ -38,7 +34,7 @@ export default class HomeScreen extends React.Component {
 
         this.data = [];
         this.getChartData();
-
+        console.log("Char data: ",this.data)
 
         this.options = {
             margin: {
@@ -75,8 +71,7 @@ export default class HomeScreen extends React.Component {
 
     refresh() {
         this.setState(prevState => {
-            return Object.assign({}, prevState, {dataSource: dataSource.cloneWithRows(global.products)});
-
+            return Object.assign({}, prevState, {dataSource: dataSource.cloneWithRows(this.prooductOperations.getAll())});
         });
     }
 

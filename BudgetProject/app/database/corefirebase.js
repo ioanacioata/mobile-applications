@@ -12,5 +12,8 @@ const config = {
 
 const firebaseApp = firebase.initializeApp(config);
 const firebasedb = firebaseApp.database();
+// const firestack = new Firestack(FIREBASE_CONFIG);
+// let firestackDb;
+// firestack.onReady(()=> { firestackDb = firestack.database; firestackDb.setPersistence(true); });
 
 export const productsRef = firebasedb.ref('/Products');
