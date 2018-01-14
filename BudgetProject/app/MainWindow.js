@@ -2,10 +2,8 @@ import React from 'react';
 import {
     Text,
     View,
-    ListView,
     FlatList,
     StyleSheet,
-    TouchableOpacity,
     Button, RefreshControl
 } from 'react-native';
 

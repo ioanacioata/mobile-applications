@@ -1,7 +1,8 @@
 export class UserApp {
     constructor(id, email, role) {
-        this.id = null;
+        this.id = id;
         this.email = email;
         this.role = role;
     }
+
 }
