@@ -21,6 +21,19 @@ export default class UserOperations {
         });
     }
 
+    isAdmin(id) {
+        var isAdmin = false;
+        this.usersRef.on('value', (snapshot) => {
+            snapshot.forEach((child) => {
+                console.log("found the admin user ", child.val());
+                if (child.val().id === id && child.val().role === "ADMIN") {
+                    isAdmin = true;
+                }
+            });
+        });
+        console.log("result from isAdmin ", isAdmin);
+        return isAdmin;
+    }
 
     makeAdmin(user) {
         console.log("In update : ", user);

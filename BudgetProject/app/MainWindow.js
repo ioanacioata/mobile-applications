@@ -10,6 +10,8 @@ import {
 import {Pie} from 'react-native-pathjs-charts';
 import ProductOperations from "./database/ProductOperations";
 import TouchableItem from "../node_modules/react-navigation/lib-rn/views/TouchableItem";
+import UserOperations from "./database/UserOperations";
+import  firebase from "firebase";
 
 export default class HomeScreen extends React.Component {
 
@@ -73,7 +75,15 @@ export default class HomeScreen extends React.Component {
 
 
     edit(item) {
-        this.props.navigation.navigate("SeeItem", {refreshFunction: this.refresh.bind(this), item: item});
+        var userOp = new UserOperations();
+        if(userOp.isAdmin(firebase.auth().currentUser.uid)===true){
+            alert("You are admin, so you can edit existing products");
+            this.props.navigation.navigate("SeeItem", {refreshFunction: this.refresh.bind(this), item: item});
+        }
+        else {
+            alert("You cannot edit, you are not an admin! ");
+        }
+
     }
 
     add() {
