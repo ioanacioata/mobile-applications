@@ -8,7 +8,6 @@ import {
     Picker,
     Alert
 } from 'react-native';
-import StorageHelper from "./storage/StorageHelper";
 import ProductOperations from "./database/ProductOperations";
 
 export default class SeeItemScreen extends React.Component {
@@ -16,7 +15,6 @@ export default class SeeItemScreen extends React.Component {
     constructor(props) {
         super(props);
         this.productOperations = new ProductOperations();
-        // this.storageHelper = new StorageHelper();
         this.state = {
             id: 0,
             name: "",
@@ -36,14 +34,6 @@ export default class SeeItemScreen extends React.Component {
     }
 
     ok() {
-        // var item = this.state;
-        // for (var i = 0; i < global.products.length; i++) {
-        //     if (global.products[i].id === item.id) {
-        //         global.products[i] = item;
-        //     }
-        // }
-        // this.storageHelper.addItem(item);
-
         this.productOperations.update(this.state);
         this.props.navigation.state.params.refreshFunction();
         this.props.navigation.goBack();
@@ -58,14 +48,6 @@ export default class SeeItemScreen extends React.Component {
     }
 
     delete() {
-        // var item = this.state;
-        // for (var i = 0; i < global.products.length; i++) {
-        //     if (global.products[i].id === item.id) {
-        //         global.products.splice(i, 1);
-        //     }
-        // }
-        // this.storageHelper.deleteItem(this.state.id.toString());
-
         this.productOperations.delete(this.state.id);
         this.props.navigation.state.params.refreshFunction();
         this.props.navigation.goBack();

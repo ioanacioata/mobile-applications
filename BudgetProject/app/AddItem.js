@@ -7,7 +7,6 @@ import {
     Picker,
     Alert
 } from 'react-native';
-import StorageHelper from "./storage/StorageHelper";
 import ProductOperations from "./database/ProductOperations";
 import {Product} from "./model/Product";
 
@@ -16,7 +15,6 @@ export default class AddItemScreen extends React.Component {
     constructor(props) {
         super(props);
         this.productOperations = new ProductOperations();
-        this.storageHelper = new StorageHelper();
         this.state = {
             id: 0,
             name: "",
@@ -27,34 +25,18 @@ export default class AddItemScreen extends React.Component {
     }
 
     ok() {
-        //setting the id
-        if (global.products.length > 0) {
-            var id = global.products[global.products.length - 1].id + 1;
-            this.state.id = id;
-        }
-        else {
-            var id = 1;
-        }
-        this.state.id = id;
-
         //adding the element
         var elem = this.state;
         var product = new Product(this.state.name, this.state.brand, this.state.price, this.state.supermarket);
         //verify if exists already
         var found = false;
-        for (var i = 0; i < global.products.length; i++) {
-            if (global.products[i].name === elem.name && elem.supermarket === global.products[i].supermarket) {
+        var products = this.productOperations.getAll();
+        for (var i = 0; i < products.length; i++) {
+            if (products[i].name === elem.name && elem.supermarket === products[i].supermarket) {
                 found = true;
             }
         }
         if (found === false) {
-
-            global.products.push(elem);
-            this.storageHelper.addItem(elem);
-            // console.error(this.props.navigation.params);
-
-
-            // this.productOperations.add(elem.name, elem.brand, elem.price, elem.supermarket);
             this.productOperations.add(product);
 
             this.props.navigation.state.params.refreshFunction();

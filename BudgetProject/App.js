@@ -5,68 +5,27 @@
  */
 
 import React from 'react';
+import * as firebase from 'firebase'
 
 import {StackNavigator} from 'react-navigation';
 import HomeScreen from "./app/MainWindow";
 import SeeItemScreen from "./app/SeeItem"
 import AddItemScreen from "./app/AddItem";
+import LoginScreen from "./app/LoginSreen";
 
 global.supermarkets = [
     {name: "Profi Marasti"},
-    {name:"Auchan Iulius Mall"},
-    {name:"Kaufland Gheorgheni"},
-    {name:"Carefour Vivo"}
+    {name: "Auchan Iulius Mall"},
+    {name: "Kaufland Gheorgheni"},
+    {name: "Carefour Vivo"}
 ];
 
-global.products = [];
-//     {
-//         id: 1,
-//         name: 'Coca-Cola 0.5l',
-//         price: 2.5,
-//         supermarket: global.supermarkets[0],
-//         brand: 'Coca-Cola'
-//     },
-//
-//     {
-//         id: 2,
-//         name: 'Cutie servetele',
-//         price: 5.5,
-//         supermarket: global.supermarkets[1],
-//         brand: 'Cien'
-//
-//     },
-//     {
-//         id: 3,
-//         name: 'Apa minerala 0.5l',
-//         price: 3.6,
-//         supermarket: global.supermarkets[2],
-//         brand: 'Aqua Carpatica'
-//     },
-//     {
-//         id: 4,
-//         name: 'Ciocolata cu Oreo',
-//         price: 4.2,
-//         supermarket: global.supermarkets[1],
-//         brand: 'Milka'
-//     },
-//     {
-//         id: 5,
-//         name: 'Ciocolata cu Capsuni',
-//         price: 4.0,
-//         supermarket: global.supermarkets[3],
-//         brand: 'Milka'
-//     },
-//     {
-//         id: 6,
-//         name: 'Gummy Bears',
-//         price: 3.8,
-//         supermarket: global.supermarkets[2],
-//         brand: 'Haribo'
-//     }
-// ];
-//
+const NavigationApp = StackNavigator({
 
-const App = StackNavigator({
+    LoginScreen: {
+        screen: LoginScreen,
+    },
+
     Home: {
         screen: HomeScreen,
     },
@@ -80,4 +39,27 @@ const App = StackNavigator({
     }
 });
 
-export default App;
+export default class App extends React.Component {
+
+    componentWillMount() {
+
+        // Initialize Firebase
+        const config = {
+            apiKey: "AIzaSyB0j13WROZhQzq3pWPQWdUXOYj7VpwEHvI",
+            authDomain: "budgetproject-23e24.firebaseapp.com",
+            databaseURL: "https://budgetproject-23e24.firebaseio.com",
+            projectId: "budgetproject-23e24",
+            storageBucket: "",
+            messagingSenderId: "944194239338"
+        };
+
+        firebase.initializeApp(config);
+        // firebase.auth().signOut();
+    }
+
+    render() {
+        return (
+            <NavigationApp/>
+        );
+    }
+};

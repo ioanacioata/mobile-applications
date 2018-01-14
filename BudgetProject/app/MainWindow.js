@@ -3,39 +3,32 @@ import {
     Text,
     View,
     ListView,
+    FlatList,
     StyleSheet,
     TouchableOpacity,
-    Button, AsyncStorage
+    Button, RefreshControl
 } from 'react-native';
 
 import {Pie} from 'react-native-pathjs-charts';
-import StorageHelper from "./storage/StorageHelper";
 import ProductOperations from "./database/ProductOperations";
+import TouchableItem from "../node_modules/react-navigation/lib-rn/views/TouchableItem";
 
-var dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 export default class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        // this.storageHelper = new StorageHelper();
+        this.refresh = this.refresh.bind(this);
 
-        this.prooductOperations = new ProductOperations();
-        // this.storageHelper.initArray().then(() => {
-        //     this.refresh()
-        // }, () => {
-        // });
-        // this.refresh();
-
-        global.products=this.prooductOperations.getAll();
+        this.productOperations = new ProductOperations();
+        this.productList = [];
         this.state = {
-            dataSource: dataSource.cloneWithRows(global.products)
+            // dataSource: dataSource.cloneWithRows(global.products)
+            refreshing: false,
         };
 
 
         this.data = [];
         this.getChartData();
-        console.log("Char data: ",this.data)
-
         this.options = {
             margin: {
                 top: 5,
@@ -64,15 +57,20 @@ export default class HomeScreen extends React.Component {
     }
 
     getChartData() {
-        this.data.push({"name": "Type1", "prod": 50});
-        this.data.push({"name": "Type2", "prod": 40});
-        this.data.push({"name": "Type3", "prod": 10});
+        this.data.push({"name": "Profi Marasti", "products": 50});
+        this.data.push({"name": "Auchan Iulius Mall", "products": 30});
+        this.data.push({"name": "Kaufland Gheorgheni", "products": 100});
+        this.data.push({"name": "Carefour Vivo", "products": 100});
     }
 
     refresh() {
-        this.setState(prevState => {
-            return Object.assign({}, prevState, {dataSource: dataSource.cloneWithRows(this.prooductOperations.getAll())});
-        });
+        this.setState({refreshing: true});
+        this.productList = this.productOperations.getAll();
+        this.setState({refreshing: false});
+    }
+
+    componentWillMount() {
+        this.refresh();
     }
 
 
@@ -84,38 +82,68 @@ export default class HomeScreen extends React.Component {
         this.props.navigation.navigate("AddItem", {refreshFunction: this.refresh.bind(this)});
     }
 
-    renderRow(item, sectionId, rowId, highlightRow) {
-        return (
-            <TouchableOpacity onPress={() => this.edit(item)}>
-                <View style={styles.container}>
-                    <Text style={styles.headline}>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
-        );
+    logoutUser() {
+        this.props.navigation.navigate("LoginScreen", {refreshFunction: this.refresh.bind(this)});
     }
 
     render() {
-        return (
-            <View style={{flex: 1, padding: 10, justifyContent: 'space-between'}}>
-                <Text>Products</Text>
-                <ListView dataSource={this.state.dataSource} renderRow={this.renderRow.bind(this)}/>
-                <Button title="Add" onPress={() => this.add()}/>
+        const {navigate} = this.props.navigation;
+        if (this.state.refreshing === true) {
+            return (
+                <View style={styles.container}>
+                    <Text>Products are loading...</Text>
+                </View>
+            );
+        } else
+            return (
+                <View style={{flex: 1, padding: 10, justifyContent: 'space-between'}}>
+                    <Button title="Add" onPress={() => this.add()}/>
+                    <Text>Products</Text>
 
-                {/*<Pie*/}
-                    {/*data={this.data}*/}
-                    {/*options={this.options}*/}
-                    {/*accessorKey="prod"/>*/}
-            </View>
-        )
+                    <FlatList
+                        data={this.productList}
+                        extraData={this.productList}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this.refresh}
+                            />
+                        }
+
+                        keyExtractor={(item, index) => index}
+                        renderItem={({item}) =>
+                            <View style={styles.listItemContainer}>
+                                <TouchableItem onPress={() => this.edit(item)}>
+                                    <View style={styles.container}>
+                                        <Text style={styles.headline}>{item.name}</Text>
+                                    </View>
+                                </TouchableItem>
+                            </View>
+
+                        }
+                    />
+
+                    {/*<Pie*/}
+                        {/*data={this.data}*/}
+                        {/*options={this.options}*/}
+                        {/*accessorKey="products"/>*/}
+
+                    <Button title="Logout" onPress={() => this.logoutUser()}/>
+                </View>
+            );
     }
-};
 
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 12,
         backgroundColor: '#f4f4f4',
+    },
+    listItemContainer: {
+        flex: 1,
+        margin: 2
     },
 
     details: {
@@ -128,6 +156,7 @@ const styles = StyleSheet.create({
         flex: 1
     }
 });
+
 
 
 
