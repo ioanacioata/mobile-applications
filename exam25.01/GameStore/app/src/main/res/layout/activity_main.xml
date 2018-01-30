@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="com.example.ioana.gamestore.MainActivity"
+    android:layout_margin="15dp"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:background="@drawable/android"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_margin="15dp"
+        />
+    <Button
+        android:id="@+id/goToClientButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Client Section"
+
+        android:textAllCaps="false"
+        android:background="@android:color/holo_blue_dark"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        />
+
+    <Button
+        android:id="@+id/goToEmployeeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Employee Section"
+
+        android:textAllCaps="false"
+        android:background="@android:color/holo_green_dark"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        />
+</LinearLayout>

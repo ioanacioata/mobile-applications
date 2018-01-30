@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Game Store</string>
+    <string name="section1">Client Section</string>
+    <string name="section2">Employee Section</string>
+</resources>

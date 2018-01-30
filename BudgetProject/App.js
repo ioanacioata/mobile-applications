@@ -50,11 +50,11 @@ export default class App extends React.Component {
             databaseURL: "https://budgetproject-23e24.firebaseio.com",
             projectId: "budgetproject-23e24",
             storageBucket: "",
-            messagingSenderId: "944194239338"
+            messagingSenderId: "944194239338",
+            persitence : true
         };
 
         firebase.initializeApp(config);
-        // firebase.auth().signOut();
     }
 
     render() {
