@@ -8,6 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Ioana on 30/01/2018.
  */
 
+
+/**
+ * Creates a Retrofit that turns the HTTP API into a given Java Interface (in this case it will
+ * be the Service interface).
+ * It automatically transforms the JSON into object.
+ */
 public class ServiceFactory {
     public static <T> T createRetrofitService(final Class<T> clazz, final String endPoint) {
         Retrofit retrofit = new Retrofit.Builder()

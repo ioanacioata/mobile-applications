@@ -1,14 +1,24 @@
 package com.example.ioana.gamestore.domain;
 
-/**
- * Created by Ioana on 30/01/2018.
- */
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 
-public class Game {
+import java.io.Serializable;
+
+@Entity(tableName = "games")
+public class Game implements Serializable {
+    @PrimaryKey(autoGenerate = true)
     private int id;
+
     private String name;
+
+    @TypeConverters(TypeConv.class)
     private Type type;
+
+    @TypeConverters(StatusConverter.class)
     private Status status;
+
     private int quantity;
 
     public Game(int id, String name, Type type, Status status, int quantity) {

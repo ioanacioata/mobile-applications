@@ -6,22 +6,16 @@ import com.google.gson.annotations.SerializedName;
  * Created by Ioana on 30/01/2018.
  */
 
-enum Status {
+public enum Status {
     @SerializedName("available")
-    AVAILABLE("available"),
+    AVAILABLE,
     @SerializedName("sold")
-    SOLD("sold"),
+    SOLD,
     @SerializedName("rent")
-    RENT("rent") ;
-
-    private String s;
-
-    Status(String s) {
-        this.s = s;
-    }
+    RENT;
 
     @Override
     public String toString() {
-        return s;
+        return this.name().toLowerCase();
     }
 }

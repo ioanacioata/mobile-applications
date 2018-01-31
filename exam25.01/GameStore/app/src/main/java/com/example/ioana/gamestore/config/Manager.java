@@ -1,5 +1,6 @@
 package com.example.ioana.gamestore.config;
 
+import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -13,25 +14,29 @@ import com.example.ioana.gamestore.service.ServiceFactory;
 
 import java.util.List;
 
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
- * Created by Ioana on 30/01/2018.
+ * Manages the persistance and hangles the API calls
+ * Populates the correct database in each case
  */
-
 public class Manager {
     private static final String TAG = Manager.class.getName();
+    private GameApp app;
     private Service service;
-    //todo add   private BookApp app; field -- using room
 
-    public Manager() {
+    public Manager(Application app) {
+        this.app = (GameApp) app;
         this.service = ServiceFactory.createRetrofitService(Service.class, Service.SERVICE_ENDPOINT);
     }
 
+    /**
+     * @param context
+     * @return true if online, false if offline
+     */
     public boolean networkConnectivity(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -40,25 +45,29 @@ public class Manager {
         return networkInfo != null && networkInfo.isConnected();
     }
 
-    public void loadEvents(final ProgressBar progressBar/*, final MyCallback callback*/) {
+    /**
+     * Load data from /games API and to clientDatabase
+     *
+     * @param progressBar
+     * @param callback
+     */
+    public void loadAllForClient(final ProgressBar progressBar, final MyCallback callback) {
         Log.i(TAG, "Loading data ... ");
+        progressBar.setVisibility(View.VISIBLE);
         service.getGames()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Game>>() {
                     @Override
                     public void onCompleted() {
-                        Timber.v("Service completed!");
                         Log.i(TAG, "Service completed!");
                         progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.e(e, "Errors while loading the events");
                         Log.e(TAG, "Errors while loading the events:   ", e);
-                        //TODO implement callback and throw err message
-//                        callback.showError("Not able to retrieve the data. Displaying local data!");
+                        callback.showError("Not able to retrieve the data. Displaying local data!");
                     }
 
                     @Override
@@ -66,14 +75,59 @@ public class Manager {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                // update device database
+                                app.clientDatabase.getDao().deleteAll();
+
+                                //just print current data
                                 for (Game g : games) {
-                                    Timber.i(g.toString());
                                     Log.i(TAG, g.toString());
+                                    app.clientDatabase.getDao().add(g);
                                 }
-                                //TODO update device database
+//                                Timber.i("SIZE IN THE DB  : %s", app.clientDatabase.getDao()
+//                                        .getAll().getValue().size());
+//                                app.clientDatabase.getDao().addAll(games);
                             }
                         }).start();
-                        Timber.i("Data persisted");
+                        Log.i(TAG, "Data persisted");
+                    }
+                });
+    }
+
+    /**
+     * Load data from /all API and to employeeDatabase
+     *
+     * @param progressBar
+     * @param callback
+     */
+    public void loadAllForEmployee(final ProgressBar progressBar, final MyCallback callback) {
+        Log.i(TAG, "Loading data ... ");
+        service.getAllGames()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<Game>>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.i(TAG, "Service completed!");
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "Errors while loading the events:   ", e);
+                        callback.showError("Not able to retrieve the data. Displaying local data!");
+                    }
+
+                    @Override
+                    public void onNext(final List<Game> games) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //update device database
+                                app.employeeDatabase.getDao().deleteAll();
+                                app.employeeDatabase.getDao().addAll(games);
+                            }
+                        }).start();
+                        Log.i(TAG, "Data persisted");
                     }
                 });
     }

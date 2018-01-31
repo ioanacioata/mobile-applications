@@ -15,9 +15,14 @@ import rx.Observable;
  * Created by Ioana on 30/01/2018.
  */
 
+/**
+ * Service is an interface that listens to a given url (endpoint) and retrieves data, using the
+ * exposed APIs from the server.
+ */
 public interface Service {
-//    String SERVICE_ENDPOINT ="http://192.168.2.112:4001"; //acasa
-    String SERVICE_ENDPOINT ="http://192.168.0.178:4001"; //mobil
+        String SERVICE_ENDPOINT ="http://192.168.2.117:4001"; //acasa
+//    String SERVICE_ENDPOINT = "http://192.168.0.178:4001"; //mobil
+
 
     //APIs for client section
 
@@ -42,7 +47,7 @@ public interface Service {
     Observable<Game> addGame(@Body Game game);
 
     @DELETE("removeGame")
-    Observable<Game>deleteGame(@Body Game game);
+    Observable<Game> deleteGame(@Body Game game);
 
     @POST("updateGame")
     Observable<Game> updateGame(@Body Game game);

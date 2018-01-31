@@ -2,26 +2,16 @@ package com.example.ioana.gamestore.domain;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Ioana on 30/01/2018.
- */
-
-enum Type {
+public enum Type {
     @SerializedName("action")
-    ACTION("action"),
+    ACTION,
     @SerializedName("adventure")
-    ADVENTURE("adventure"),
+    ADVENTURE,
     @SerializedName("board")
-    BOARD("board");
-
-    private String s;
-
-    Type(String s) {
-        this.s = s;
-    }
+    BOARD;
 
     @Override
     public String toString() {
-        return s;
+        return this.name().toLowerCase();
     }
 }
