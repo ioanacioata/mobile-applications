@@ -1,6 +1,7 @@
 package com.example.ioana.gamestore.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,12 @@ import com.example.ioana.gamestore.domain.Game;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder> {
+    private static final String TAG = ClientAdapter.class.getName();
     private List<Game> mValues;
 
-    public MyAdapter() {
+    public ClientAdapter() {
         mValues = new ArrayList<>();
     }
 
@@ -34,7 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_item, parent, false);
+                .inflate(R.layout.row_item_client, parent, false);
         return new ViewHolder(view);
     }
 
@@ -50,7 +51,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Timber.i("Pressed on item " + holder.currentItem.toString());
+                Log.i(TAG, "Pressed on item " + holder.currentItem.toString());
             }
         });
 

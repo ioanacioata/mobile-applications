@@ -1,35 +1,30 @@
 package com.example.ioana.gamestore.ui;
 
-import android.arch.lifecycle.Observer;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ioana.gamestore.R;
 import com.example.ioana.gamestore.config.GameApp;
 import com.example.ioana.gamestore.config.Manager;
 import com.example.ioana.gamestore.config.MyCallback;
-import com.example.ioana.gamestore.domain.Game;
-import com.example.ioana.gamestore.ui.adapter.MyAdapter;
-
-import java.util.List;
-
-import timber.log.Timber;
+import com.example.ioana.gamestore.dao.GameDao;
+import com.example.ioana.gamestore.ui.adapter.ClientAdapter;
 
 public class ClientActivity extends AppCompatActivity implements MyCallback, View.OnClickListener {
 
     private static final String TAG = ClientActivity.class.getName();
     TextView text;
-    ProgressBar progressBar;
+    ProgressDialog progressDialog;
     private Manager manager;
 
-    private MyAdapter adapter;
+    private ClientAdapter adapter;
     private View recycleViewList;
 
     @Override
@@ -37,15 +32,15 @@ public class ClientActivity extends AppCompatActivity implements MyCallback, Vie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client);
 
-        Timber.i("Loading data with timber");
         manager = new Manager(getApplication());
 
-        progressBar = findViewById(R.id.progressBarClientList);
-        progressBar.setVisibility(View.GONE);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
 
 
         text = findViewById(R.id.currentListText);
-        text.setText("Nothing to display ... click on one of the buttons ");
+        text.setText("Click on the button to choose what to display ... ");
 
         findViewById(R.id.displayAllClient).setOnClickListener(this);
         findViewById(R.id.displayBought).setOnClickListener(this);
@@ -63,33 +58,36 @@ public class ClientActivity extends AppCompatActivity implements MyCallback, Vie
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         ((RecyclerView) recycleViewList).setLayoutManager(mLayoutManager);
 
-        setUpAllGames((RecyclerView) recycleViewList);
-        loadEvents();
-
+        adapter = new ClientAdapter();
     }
 
 
     @Override
     public void showError(String message) {
-        progressBar.setVisibility(View.GONE);
         Log.i(TAG, "In show error ... ");
-//        Snackbar.make(recycleViewList, error, Snackbar.LENGTH_INDEFINITE)
-//                .setAction("RETRY", new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        loadEvents();
-//                    }
-//                }).show();
+        Snackbar.make(recycleViewList, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction("RETRY", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setUpAllGames((RecyclerView) recycleViewList);
+                    }
+                }).show();
     }
 
+    /**
+     * Load data from the server
+     *
+     * @return true - if we have internet connection, false otherwise
+     */
     private boolean loadEvents() {
         Log.i(TAG, " in load events .... ");
         boolean connectivity = manager.networkConnectivity(getApplicationContext());
         if (!connectivity) {
             Log.i(TAG, "No internet connection");
             showError("No internet connection!");
+        } else {
+            manager.loadAllForClient(progressDialog, this);
         }
-        manager.loadAllForClient(progressBar, this);
         return connectivity;
     }
 
@@ -104,36 +102,45 @@ public class ClientActivity extends AppCompatActivity implements MyCallback, Vie
         switch (v.getId()) {
             case R.id.displayBought:
                 Log.i(TAG, "Displaying the games that were BOUGHT...");
-                text.setText("My Bought Games: ");
+                text.setText("My bought games: ");
+                this.clear();
+                setUpGames((RecyclerView) recycleViewList, ((GameApp) getApplication()).buyDatabase.getDao());
                 break;
             case R.id.displayAllClient:
                 Log.i(TAG, "Displaying ALL the game...");
-                text.setText("All Games: ");
+
                 setUpAllGames((RecyclerView) recycleViewList);
-                loadEvents();
+
                 break;
 
             case R.id.displayRented:
                 Log.i(TAG, "Displaying the games that were RENTED...");
-                text.setText("My Rented Games: ");
+                text.setText("My rented games: ");
+                this.clear();
+                final GameDao rentDao = ((GameApp) getApplication()).rentDatabase.getDao();
+                setUpGames((RecyclerView) recycleViewList, rentDao);
                 break;
         }
     }
 
-    private void setUpAllGames(final RecyclerView recyclerView) {
-        adapter = new MyAdapter();
+    private void setUpGames(RecyclerView recyclerView, final GameDao gameDao) {
+        Log.i(TAG, "In set up RENT/BOUGHT games... ");
 
-        ((GameApp) getApplication()).clientDatabase.getDao().getAll()
-                .observe(this, new Observer<List<Game>>() {
-                    @Override
-                    public void onChanged(@Nullable List<Game> games) {
-                        adapter.setData(games);
-                        Log.i(TAG, "setting data IN setUpAllGames method: ");
-                        Log.i(TAG, " FIRST ELEM IS : " + games.get(0).toString());
-
-                    }
-                });
+        adapter = new ClientAdapter();
+        adapter.setData(gameDao.getAll());
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void setUpAllGames(final RecyclerView recyclerView) {
+        Log.i(TAG, "In set up ALL games... ");
+
+        text.setText("All available games: ");
+
+        if (loadEvents()) {
+            adapter = new ClientAdapter();
+            adapter.setData(((GameApp) getApplication()).clientDatabase.getDao().getAll());
+            recyclerView.setAdapter(adapter);
+        }
     }
 }

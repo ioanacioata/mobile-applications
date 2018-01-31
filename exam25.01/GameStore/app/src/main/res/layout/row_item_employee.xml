@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:orientation="vertical">
+    android:layout_margin="7dp"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:background="#deeff5">
 
     <TextView
-        android:id="@+id/nameTextView"
+        android:id="@+id/nameTextView2"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="Name"
@@ -25,7 +27,7 @@
             android:textColor="@android:color/darker_gray" />
 
         <TextView
-            android:id="@+id/quantityTextView"
+            android:id="@+id/quantityTextView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".50"
@@ -38,11 +40,24 @@
             android:textColor="@android:color/darker_gray" />
 
         <TextView
-            android:id="@+id/typeTextView"
+            android:id="@+id/typeTextView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight=".50"
             android:text="board" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/statusTextView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:text="available" />
     </LinearLayout>
 
 </LinearLayout>

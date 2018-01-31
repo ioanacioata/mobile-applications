@@ -1,5 +1,4 @@
 package com.example.ioana.gamestore.dao;
-import android.arch.lifecycle.LiveData;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -17,7 +16,7 @@ import java.util.List;
 @Dao
 public interface GameDao {
     @Query("select * from games")
-    LiveData<List<Game>> getAll();
+    List<Game> getAll();
 
     @Insert
     void add(Game game);

@@ -1,12 +1,13 @@
 package com.example.ioana.gamestore.config;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.ioana.gamestore.domain.Game;
 import com.example.ioana.gamestore.service.Service;
@@ -14,10 +15,9 @@ import com.example.ioana.gamestore.service.ServiceFactory;
 
 import java.util.List;
 
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import timber.log.Timber;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Manages the persistance and hangles the API calls
@@ -48,88 +48,69 @@ public class Manager {
     /**
      * Load data from /games API and to clientDatabase
      *
-     * @param progressBar
+     * @param progressDialog
      * @param callback
      */
-    public void loadAllForClient(final ProgressBar progressBar, final MyCallback callback) {
+    public void loadAllForClient(final ProgressDialog progressDialog, final MyCallback callback) {
         Log.i(TAG, "Loading data ... ");
-        progressBar.setVisibility(View.VISIBLE);
-        service.getGames()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Game>>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.i(TAG, "Service completed!");
-                        progressBar.setVisibility(View.GONE);
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "Errors while loading the events:   ", e);
-                        callback.showError("Not able to retrieve the data. Displaying local data!");
-                    }
+        progressDialog.show();
 
-                    @Override
-                    public void onNext(final List<Game> games) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                // update device database
-                                app.clientDatabase.getDao().deleteAll();
+        Call<List<Game>> call = service.getGames();
 
-                                //just print current data
-                                for (Game g : games) {
-                                    Log.i(TAG, g.toString());
-                                    app.clientDatabase.getDao().add(g);
-                                }
-//                                Timber.i("SIZE IN THE DB  : %s", app.clientDatabase.getDao()
-//                                        .getAll().getValue().size());
-//                                app.clientDatabase.getDao().addAll(games);
-                            }
-                        }).start();
-                        Log.i(TAG, "Data persisted");
-                    }
-                });
+        call.enqueue(new Callback<List<Game>>() {
+            @Override
+            public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
+                List<Game> games = response.body();
+                Log.i(TAG, "Size of client list is " + games.size());
+                app.clientDatabase.getDao().deleteAll();
+                app.clientDatabase.getDao().addAll(games);
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Game>> call, Throwable t) {
+                Log.e(TAG, "error in get all for clients", t);
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                Toast.makeText(app.getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     /**
      * Load data from /all API and to employeeDatabase
      *
-     * @param progressBar
+     * @param progressDialog
      * @param callback
      */
-    public void loadAllForEmployee(final ProgressBar progressBar, final MyCallback callback) {
-        Log.i(TAG, "Loading data ... ");
-        service.getAllGames()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<Game>>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.i(TAG, "Service completed!");
-                        progressBar.setVisibility(View.GONE);
-                    }
+    public void loadAllForEmployee(final ProgressDialog progressDialog, final MyCallback callback) {
+        Log.i(TAG, "Loading data for employee ... ");
+        progressDialog.show();
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e(TAG, "Errors while loading the events:   ", e);
-                        callback.showError("Not able to retrieve the data. Displaying local data!");
-                    }
+        Call<List<Game>> call = service.getAllGames();
 
-                    @Override
-                    public void onNext(final List<Game> games) {
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //update device database
-                                app.employeeDatabase.getDao().deleteAll();
-                                app.employeeDatabase.getDao().addAll(games);
-                            }
-                        }).start();
-                        Log.i(TAG, "Data persisted");
-                    }
-                });
+        call.enqueue(new Callback<List<Game>>() {
+            @Override
+            public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
+                List<Game> games = response.body();
+                Log.i(TAG, "Size of client list is " + games.size());
+                app.employeeDatabase.getDao().deleteAll();
+                app.employeeDatabase.getDao().addAll(games);
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Game>> call, Throwable t) {
+                Log.e(TAG, "error in get all for employees", t);
+                callback.showError(t.getMessage());
+            }
+        });
     }
 
 }
