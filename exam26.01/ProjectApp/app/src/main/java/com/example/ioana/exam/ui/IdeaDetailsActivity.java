@@ -227,6 +227,16 @@ public class IdeaDetailsActivity extends AppCompatActivity implements View.OnCli
     }
 
     @Override
+    protected void onDestroy() {
+        if (progressDialog.isShowing() && progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
+    }
+
+    //MyCallback implemnetation
+
+    @Override
     public void showError(String location, final String message) {
         Log.i(TAG, "action : " + action + " showing error ...");
         Log.e(TAG, "LOCATION: " + location + "  MESSAGE: " + message);
@@ -266,4 +276,5 @@ public class IdeaDetailsActivity extends AppCompatActivity implements View.OnCli
         });
 //        Toast.makeText(getApplicationContext(), "Success: " + message, Toast.LENGTH_LONG).show();
     }
+
 }

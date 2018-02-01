@@ -35,6 +35,13 @@ public class ProjectDetailsActivity extends AppCompatActivity implements View.On
 
     private Project project;
 
+    @Override
+    protected void onDestroy() {
+        if (progressDialog.isShowing() && progressDialog != null) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
