@@ -2,22 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ioana.gamestore">
 
-    <!--necessary for the connection to the server -->
+    <!-- necessary for the connection to the server -->
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!--add name of application for the Manager class-->
+    <!-- add name of application for the Manager class -->
     <application
-        android:name="com.example.ioana.gamestore.config.GameApp"
-
+        android:name=".config.GameApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +27,8 @@
             android:label="@string/section1" />
         <activity
             android:name=".ui.EmployeeActivity"
-            android:label="@string/section2"></activity>
+            android:label="@string/section2" />
+        <activity android:name=".ui.EditGameActivity"></activity>
     </application>
 
 </manifest>

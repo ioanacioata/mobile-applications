@@ -7,7 +7,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
@@ -46,7 +45,8 @@ public interface Service {
     @POST("addGame")
     Call<Game> addGame(@Body Game game);
 
-    @DELETE("removeGame")
+    @POST("removeGame")
+//    @HTTP(method = "DELETE", path = "/removeGame", hasBody = true)
     Call<Game> deleteGame(@Body Game game);
 
     @POST("updateGame")

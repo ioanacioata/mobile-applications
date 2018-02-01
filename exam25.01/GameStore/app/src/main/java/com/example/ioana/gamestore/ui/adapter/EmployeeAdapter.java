@@ -1,5 +1,8 @@
 package com.example.ioana.gamestore.ui.adapter;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.ioana.gamestore.R;
 import com.example.ioana.gamestore.domain.Game;
+import com.example.ioana.gamestore.ui.EditGameActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +24,10 @@ import java.util.List;
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHolder2> {
     private static final String TAG = ClientAdapter.class.getName();
     private List<Game> mValues;
+    private Context context;
 
-    public EmployeeAdapter() {
+    public EmployeeAdapter(Context context) {
+        this.context = context;
         mValues = new ArrayList<>();
     }
 
@@ -44,7 +50,7 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
 
 
     @Override
-    public void onBindViewHolder(final ViewHolder2 holder, int position) {
+    public void onBindViewHolder(final ViewHolder2 holder, final int position) {
         //set values for each item
         holder.currentItem = mValues.get(position);
         holder.nameTextView.setText(holder.currentItem.getName());
@@ -56,6 +62,11 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.ViewHo
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "Pressed on item " + holder.currentItem.toString());
+
+                Intent intent = new Intent(context, EditGameActivity.class);
+                intent.putExtra("action", "edit");
+                intent.putExtra("game", mValues.get(position));
+                context.startActivity(intent);
             }
         });
 

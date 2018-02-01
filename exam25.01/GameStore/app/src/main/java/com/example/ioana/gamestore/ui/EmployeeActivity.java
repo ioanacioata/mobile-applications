@@ -1,6 +1,7 @@
 package com.example.ioana.gamestore.ui;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -52,13 +53,22 @@ public class EmployeeActivity extends AppCompatActivity implements MyCallback {
 
         setUpList((RecyclerView) recycleViewList);
 
+        findViewById(R.id.redirectToAddBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), EditGameActivity.class);
+                intent.putExtra("action", "add");
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void setUpList(final RecyclerView recycleView) {
         if (manager.networkConnectivity(getApplicationContext())) {
             //then update
             manager.loadAllForEmployee(progressDialog, this);
-            adapter = new EmployeeAdapter();
+            adapter = new EmployeeAdapter(getApplicationContext());
             adapter.setData(((GameApp) getApplication()).clientDatabase.getDao().getAll());
             recycleView.setAdapter(adapter);
         } else {
@@ -90,6 +100,11 @@ public class EmployeeActivity extends AppCompatActivity implements MyCallback {
     @Override
     public void clear() {
         adapter.clear();
+    }
+
+    @Override
+    public void showSuccess(String message) {
+        Log.i(TAG, " successful operation ... ");
     }
 
     @Override

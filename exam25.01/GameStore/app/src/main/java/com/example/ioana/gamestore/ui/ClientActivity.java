@@ -98,6 +98,11 @@ public class ClientActivity extends AppCompatActivity implements MyCallback, Vie
     }
 
     @Override
+    public void showSuccess(String message) {
+        Log.i(TAG," successful operation ... ");
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.displayBought:

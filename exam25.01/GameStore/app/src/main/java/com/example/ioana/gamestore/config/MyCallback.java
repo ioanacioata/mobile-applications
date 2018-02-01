@@ -7,4 +7,6 @@ public interface MyCallback {
     void showError(String message);
 
     void clear();
+
+    void showSuccess(String message);
 }

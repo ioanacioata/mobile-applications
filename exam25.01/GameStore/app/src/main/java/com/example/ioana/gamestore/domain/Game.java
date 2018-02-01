@@ -1,6 +1,7 @@
 package com.example.ioana.gamestore.domain;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
@@ -20,6 +21,13 @@ public class Game implements Serializable {
     private Status status;
 
     private int quantity;
+
+    @Ignore
+    public Game() {
+        id = 0;
+        status = Status.AVAILABLE; //first enum
+        type = Type.ACTION;
+    }
 
     public Game(int id, String name, Type type, Status status, int quantity) {
         this.id = id;
