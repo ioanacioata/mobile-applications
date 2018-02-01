@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.ioana.exam.ui.ProjectActivity">
-
-    <Button
-        android:id="@+id/redirectToPromoteBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:background="@android:color/holo_green_dark"
-        android:text="Promote Ideas"
-        android:textAllCaps="false"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/white" />
-
+    tools:context="com.example.ioana.exam.ui.PromoteActivity">
     <TextView
         android:id="@+id/currentListText"
         android:layout_width="wrap_content"
@@ -26,7 +14,7 @@
         android:layout_margin="5dp"
         android:layout_marginBottom="25dp"
         android:layout_marginTop="10dp"
-        android:text="@string/list_name_2"
+        android:text="@string/list_name_3"
         android:textColor="@android:color/darker_gray"
         android:textSize="25dp" />
 

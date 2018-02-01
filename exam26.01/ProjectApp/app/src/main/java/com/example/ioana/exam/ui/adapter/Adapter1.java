@@ -1,5 +1,7 @@
 package com.example.ioana.exam.ui.adapter;
 
+import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.ioana.exam.R;
 import com.example.ioana.exam.domain.Project;
-import com.example.ioana.exam.ui.EditGameActivity;
+import com.example.ioana.exam.ui.IdeaDetailsActivity;
 
 import java.util.List;
 
@@ -21,7 +23,6 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
 
     private List<Project> list;
     private Context context;
-
 
     public Adapter1(List<Project> list, Context context) {
         this.list = list;
@@ -36,7 +37,7 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Project project = list.get(position);
         holder.nameTextView.setText(project.getName());
         holder.budgetTextView.setText(String.valueOf(project.getBudget()));
@@ -47,11 +48,12 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.ViewHolder> {
             public void onClick(View view) {
                 Log.i(TAG, "Pressed on " + project.toString());
 
-                Intent i = new Intent(context, EditGameActivity.class);
-                i.putExtra(EditGameActivity.PROJECT, project);
-                i.putExtra(EditGameActivity.ACTION, EditGameActivity.DELETE_IDEA);
-                context.startActivity(i);
+                Intent i = new Intent(context, IdeaDetailsActivity.class);
+                i.putExtra(IdeaDetailsActivity.PROJECT, project);
+                i.putExtra(IdeaDetailsActivity.ACTION, IdeaDetailsActivity.DELETE_IDEA);
 
+                ((Activity) holder.view.getContext()).finish();
+                context.startActivity(i);
             }
         });
     }

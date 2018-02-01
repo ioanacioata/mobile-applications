@@ -7,8 +7,10 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by Ioana on 30/01/2018.
@@ -28,26 +30,26 @@ public interface MyService {
     @GET("ideas")
     Call<List<Project>> getIdeas();
 
+    @POST("add")
+    Call<Project> addIdea(@Body Project project);
 
-    @POST("returnProject")
-    Call<Project> returnProject(@Body Project project);
+    @DELETE("delete/{id}")
+    Call<Project> deleteIdea(@Path("id") int id);
 
-    @POST("rentProject")
-    Call<Project> rentProject(@Body Project project);
+    //APIs for project section
 
-    //APIs for employee section
+    @GET("projects")
+    Call<List<Project>> getProjects();
 
-    @GET("all")
-    Call<List<Project>> getAllProject();
+    @DELETE("remove/{id}")
+    Call<Project> deleteProject(@Path("id") int id);
 
-    @POST("addProject")
-    Call<Project> addProject(@Body Project project);
+    @POST("promote")
+    Call<Project> promoteIdea(@Body Project project);
 
-    @POST("removeProject")
-//    @HTTP(method = "DELETE", path = "/removeProject", hasBody = true)
-    Call<Project> deleteProject(@Body Project project);
+    @POST("approve")
+    Call<Project> approveProject(@Body Project project);
 
-    @POST("updateProject")
-    Call<Project> updateProject(@Body Project project);
-
+    @POST("discard")
+    Call<Project> discardProject(@Body Project project);
 }

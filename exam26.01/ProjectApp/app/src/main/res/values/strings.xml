@@ -2,10 +2,14 @@
     <string name="app_name">Project App</string>
     <string name="section1">Idea Section</string>
     <string name="section2">Project Section</string>
-    <string name="details">Details</string>
+    <string name="promote">Promote Ideas</string>
+    <string name="details1"> Idea Details </string>
+    <string name="details2"> Project Details</string>
 
     <!--activity 1 strings-->
     <string name="list_name_1">The list of ideas …</string>
     <string name="add_1">Add idea</string>
+    <string name="list_name_2">The list of projects …</string>
+    <string name="list_name_3">Ideas you can promote …</string>
 
 </resources>

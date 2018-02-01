@@ -1,9 +1,9 @@
 package com.example.ioana.exam.ui;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.ioana.exam.R;
@@ -23,7 +22,7 @@ import com.example.ioana.exam.config.Util;
 import com.example.ioana.exam.domain.Project;
 import com.example.ioana.exam.service.MyService;
 import com.example.ioana.exam.service.ServiceFactory;
-import com.example.ioana.exam.ui.adapter.Adapter1;
+import com.example.ioana.exam.ui.adapter.Adapter3;
 
 import java.util.List;
 
@@ -31,25 +30,61 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IdeaActivity extends AppCompatActivity implements MyCallback, View.OnClickListener {
+public class PromoteActivity extends AppCompatActivity implements MyCallback {
 
-    private static final String TAG = IdeaActivity.class.getName();
+    private static final String TAG = PromoteActivity.class.getName();
     private static Handler handler;
     private ProgressDialog progressDialog;
-    private Adapter1 adapter;
+    private Adapter3 adapter;
     private RecyclerView recycleView;
     private List<Project> list;
+
+    public static void promote(Project project, Context context) {
+        Log.i(TAG, "in promote method - project :  " + project.toString());
+        MyService service = ServiceFactory.createRetrofitService(MyService.class);
+        Call<Project> call = service.promoteIdea(project);
+        call.enqueue(new Callback<Project>() {
+            @Override
+            public void onResponse(Call<Project> call, Response<Project> response) {
+                if (response.code() == 200) {
+                    Log.i(TAG, "Success");
+                    Toast.makeText(context, "Idea " + response.body().getName() + " promoted!", Toast
+                            .LENGTH_LONG)
+                            .show();
+
+                    Log.i(TAG, "finishing promote activity! ");
+                    //finish Activity
+                    ((Activity) context).finish();
+                } else {
+                    Log.i(TAG, "problem... ");
+                    Toast.makeText(context, "Idea not promoted: " + Util.getErrorMessage
+                            (response), Toast
+                            .LENGTH_LONG)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Project> call, Throwable t) {
+                Log.i(TAG, "fail -> onFailure()... ");
+                Toast.makeText(context, "Error: " + t.getMessage(), Toast
+                        .LENGTH_LONG)
+                        .show();
+            }
+        });
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_idea);
+        setContentView(R.layout.activity_promote);
 
         handler = new Handler();
 
         progressDialog = new ProgressDialog(this);
 
-        findViewById(R.id.add1Btn).setOnClickListener(this);
 
 //        set up the list
 
@@ -87,14 +122,14 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
             call.enqueue(new Callback<List<Project>>() {
                 @Override
                 public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
-                    list=response.body();
+                    list = response.body();
                     if (progressDialog.isShowing()) {
                         Log.i(TAG, "DISMISSSSSSSSSSSSSSS");
                         progressDialog.dismiss();
                     }
                     if (response.code() == 200) {
                         //populate list
-                        adapter = new Adapter1(list, getApplicationContext());
+                        adapter = new Adapter3(list, getApplicationContext());
 
                         recycleView.setAdapter(adapter);
                         final AppDatabase db = getIdeaDatabase();
@@ -135,7 +170,7 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
 
         final AppDatabase db = getIdeaDatabase();
         list = db.getDao().getAll();
-        adapter = new Adapter1(list, getApplicationContext());
+        adapter = new Adapter3(list, getApplicationContext());
         recycleView.setAdapter(adapter);
 
         //try to reload data
@@ -162,10 +197,13 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "ON RESUMEEEEEEEEEEEEEEEE");
-        adapter = new Adapter1(list, getApplicationContext());
+        adapter = new Adapter3(list, getApplicationContext());
         getAll();
 
     }
+
+
+    //MyCallback IMPLEMENTATION
 
     @Override
     public void onBackPressed() {
@@ -173,27 +211,6 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
         Log.i(TAG, "Disabling handler and going back to main activity");
         handler.removeCallbacksAndMessages(null);
     }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.add1Btn:
-                Log.i(TAG, "pressed add button ...");
-                if (isNetworkAvailable()) {
-                    Intent i = new Intent(this, IdeaDetailsActivity.class);
-                    i.putExtra(IdeaDetailsActivity.ACTION, IdeaDetailsActivity.ADD_IDEA);
-
-                    finish();
-                    startActivity(i);
-                } else {
-                    showError("pressed add1Btn", "No internet connection! Cannot add.");
-                }
-                break;
-        }
-    }
-
-
-    //MyCallback IMPLEMENTATION
 
     @Override
     public void showError(String location, String message) {

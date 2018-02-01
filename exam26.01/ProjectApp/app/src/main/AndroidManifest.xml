@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.ioana.exam.ui.MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,17 +22,18 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.ioana.exam.ui.IdeaActivity"
+            android:name=".ui.IdeaActivity"
             android:label="@string/section1" />
         <activity
-            android:name="com.example.ioana.exam.ui.ProjectActivity"
+            android:name=".ui.ProjectActivity"
             android:label="@string/section2" />
         <activity
-            android:name="com.example.ioana.exam.ui.EditGameActivity"
-            android:label="@string/details"
-            >
-
-        </activity>
+            android:name=".ui.IdeaDetailsActivity"
+            android:label="@string/details1" />
+        <activity android:name=".ui.ProjectDetailsActivity"
+            android:label="@string/details2"/>
+        <activity android:name=".ui.PromoteActivity"
+            android:label="@string/promote"></activity>
     </application>
 
 </manifest>

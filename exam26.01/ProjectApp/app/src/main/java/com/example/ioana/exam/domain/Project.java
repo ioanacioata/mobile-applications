@@ -27,6 +27,8 @@ public class Project implements Serializable {
         id = 0;
         status = Status.IDEA; //first enum
         type = Type.SMALL;
+        name = "";
+        budget = 0;
     }
 
     public Project(int id, String name, Type type, Status status, int budget) {

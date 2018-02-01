@@ -20,21 +20,29 @@ import android.widget.Toast;
 
 import com.example.ioana.exam.R;
 import com.example.ioana.exam.config.MyCallback;
+import com.example.ioana.exam.config.Util;
 import com.example.ioana.exam.domain.Project;
 import com.example.ioana.exam.domain.Status;
 import com.example.ioana.exam.domain.StatusConverter;
 import com.example.ioana.exam.domain.Type;
 import com.example.ioana.exam.domain.TypeConv;
+import com.example.ioana.exam.service.MyService;
+import com.example.ioana.exam.service.ServiceFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditGameActivity extends AppCompatActivity implements View.OnClickListener, MyCallback {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class IdeaDetailsActivity extends AppCompatActivity implements View.OnClickListener, MyCallback {
     public static final String DELETE_IDEA = "deleteIdea";
     public static final String PROJECT = "project";
     public static final String ACTION = "action";
-    private static final String TAG = EditGameActivity.class.getName();
+    public static final String ADD_IDEA = "addIdea";
+    private static final String TAG = IdeaDetailsActivity.class.getName();
     ProgressDialog progressDialog;
 
     private Project project;
@@ -47,7 +55,7 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_game);
+        setContentView(R.layout.activity_details_idea);
 
 
         progressDialog = new ProgressDialog(this);
@@ -68,6 +76,10 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
                 ((EditText) findViewById(R.id.nameGame)).setText(project.getName());
                 ((EditText) findViewById(R.id.budgetGame)).setText(String.valueOf(project.getBudget()));
                 break;
+            case ADD_IDEA:
+                addBtn.setVisibility(View.VISIBLE);
+                project = new Project();
+
 
             default:
                 project = new Project();
@@ -131,8 +143,37 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
             case R.id.addBtn:
                 Log.i(TAG, "pressed ADD " + newProject.toString());
                 progressDialog.show();
-                //todo dismis progress dialog => errors
 
+                //todo add call - POST
+                if (isNetworkAvailable()) {
+                    progressDialog.show();
+
+                    MyService service = ServiceFactory.createRetrofitService(MyService.class);
+                    Call<Project> call = service.addIdea(newProject);
+                    call.enqueue(new Callback<Project>() {
+                        @Override
+                        public void onResponse(Call<Project> call, Response<Project> response) {
+                            if (response.code() == 200) {
+                                Project p = response.body();
+                                //could add to db
+                                showSuccess(ADD_IDEA + "->on response ", p.getName() + " was" +
+                                        " added");
+                            } else {
+                                String msg = Util.getErrorMessage(response);
+                                showError(ADD_IDEA + "->on response", "Status: " + response
+                                        .code() + " " + "Message: " + msg);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Project> call, Throwable t) {
+                            showError(ADD_IDEA + "->on failure", t.getMessage());
+                        }
+                    });
+
+                } else {
+                    showError("On pressing add ", "No internet connection! Cannot add.");
+                }
 
                 finish();
                 intent = new Intent(this, IdeaActivity.class);
@@ -144,17 +185,39 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
                 Log.i(TAG, "pressed DELETE " + newProject.toString());
                 if (isNetworkAvailable()) {
                     progressDialog.show();
-                    //todo dismis progress dialog => errors
-                    showSuccess("On pressing delete ", newProject.getName() + "was deleted");
+                    //todo delete call - DELETE
+                    MyService service = ServiceFactory.createRetrofitService(MyService.class);
+                    Call<Project> call = service.deleteIdea(newProject.getId());
+
+                    call.enqueue(new Callback<Project>() {
+                        @Override
+                        public void onResponse(Call<Project> call, Response<Project> response) {
+                            if (response.code() == 200) {
+                                Project resposeProject = response.body();
+                                showSuccess(DELETE_IDEA + "->onResponse ", resposeProject.getName
+                                        () + "was deleted");
+                            } else {
+                                String msg = Util.getErrorMessage(response);
+                                showError(DELETE_IDEA + "->onResponse ", msg);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Project> call, Throwable t) {
+                            showError(DELETE_IDEA + "->onFailure ", t.getMessage());
+                        }
+                    });
+
                 } else {
                     showError("On pressing delete ", "No internet connection! Cannot delete.");
                 }
-
+                finish();
                 intent = new Intent(this, IdeaActivity.class);
                 startActivity(intent);
                 break;
         }
     }
+
 
     private Boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -166,6 +229,7 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void showError(String location, final String message) {
         Log.i(TAG, "action : " + action + " showing error ...");
+        Log.e(TAG, "LOCATION: " + location + "  MESSAGE: " + message);
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -173,7 +237,8 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
         handler.post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Success: " + message, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error: " + message, Toast.LENGTH_LONG)
+                        .show();
             }
         });
     }
@@ -181,12 +246,14 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void clear() {
         Log.i(TAG, "action : " + action + " clearing ...");
-        finish();
+
+
     }
 
     @Override
     public void showSuccess(String location, final String message) {
-        Log.i(TAG, " successful operation ... " + message);
+        Log.i(TAG, " successful operation ... ");
+        Log.i(TAG, "LOCATION: " + location + "  MESSAGE: " + message);
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
