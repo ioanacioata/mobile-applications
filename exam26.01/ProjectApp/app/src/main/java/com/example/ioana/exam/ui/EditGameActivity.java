@@ -1,9 +1,13 @@
 package com.example.ioana.exam.ui;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -138,26 +142,40 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
             case R.id.deleteBtn:
                 newProject.setId(project.getId());
                 Log.i(TAG, "pressed DELETE " + newProject.toString());
-                progressDialog.show();
-                //todo dismis progress dialog => errors
+                if (isNetworkAvailable()) {
+                    progressDialog.show();
+                    //todo dismis progress dialog => errors
+                    showSuccess("On pressing delete ", newProject.getName() + "was deleted");
+                } else {
+                    showError("On pressing delete ", "No internet connection! Cannot delete.");
+                }
 
-                finish();
                 intent = new Intent(this, IdeaActivity.class);
                 startActivity(intent);
                 break;
         }
     }
 
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
-    public void showError(String location, String message) {
+    public void showError(String location, final String message) {
         Log.i(TAG, "action : " + action + " showing error ...");
-        Snackbar.make(findViewById(R.id.nameGame), message, Snackbar.LENGTH_INDEFINITE)
-                .setAction("DISMISS", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        finish();
-                    }
-                }).show();
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Success: " + message, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -167,11 +185,18 @@ public class EditGameActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void showSuccess(String location,String message) {
-        Log.i(TAG, " successful operation ... ");
+    public void showSuccess(String location, final String message) {
+        Log.i(TAG, " successful operation ... " + message);
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        Toast.makeText(getApplicationContext(), "Success: " + message, Toast.LENGTH_LONG).show();
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Success: " + message, Toast.LENGTH_LONG).show();
+            }
+        });
+//        Toast.makeText(getApplicationContext(), "Success: " + message, Toast.LENGTH_LONG).show();
     }
 }

@@ -45,9 +45,7 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
 
         handler = new Handler();
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
+
 
         findViewById(R.id.add1Btn).setOnClickListener(this);
 
@@ -75,15 +73,23 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
 
     private void getAll() {
         if (isNetworkAvailable()) {
+
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setMessage("Loading...");
             progressDialog.show();
+
+
             MyService service = ServiceFactory.createRetrofitService(MyService.class);
             Call<List<Project>> call = service.getIdeas();
-
             call.enqueue(new Callback<List<Project>>() {
                 @Override
                 public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
                     list = response.body();
-
+                    if (progressDialog.isShowing()) {
+                        Log.i(TAG, "DISMISSSSSSSSSSSSSSS");
+                        progressDialog.dismiss();
+                    }
                     if (response.code() == 200) {
                         //populate list
                         adapter = new Adapter1(list, getApplicationContext());
@@ -94,8 +100,12 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
                             db.getDao().add(p);
                         }
 
+
                         showSuccess("getAll();", "  Response: " + response.message());
                     } else {
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                         showError("getAll() -> onResponse()",
                                 "Status : " + response.code() + " Message : " + response.message());
 
@@ -104,20 +114,24 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
 
                 @Override
                 public void onFailure(Call<List<Project>> call, Throwable t) {
+
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                    }
                     showError("getAll() -> on Failure()", t.getMessage());
 
                 }
             });
 
         } else {
+
             reloadData();
         }
     }
 
     private void reloadData() {
         showError("getAll()", "No internet connection!");
-        clear();
-        progressDialog.show();
+
         final AppDatabase db = getIdeaDatabase();
         list = db.getDao().getAll();
         adapter = new Adapter1(list, getApplicationContext());
@@ -146,10 +160,9 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
     @Override
     protected void onResume() {
         super.onResume();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Loading...");
+        adapter=new Adapter1(list,getApplicationContext());
         getAll();
+
     }
 
     @Override
@@ -181,14 +194,16 @@ public class IdeaActivity extends AppCompatActivity implements MyCallback, View.
     @Override
     public void clear() {
         Log.i(TAG, " in clear() -  ");
-        adapter.clear();
+
     }
 
     @Override
     public void showSuccess(String location, String message) {
         if (progressDialog.isShowing()) {
+            Log.i(TAG, "dismissssss");
             progressDialog.dismiss();
         }
+        progressDialog.dismiss();
         Log.i(TAG, " successful operation ... ");
         Log.i(TAG, "Method: " + location + " Message: " + message);
     }
