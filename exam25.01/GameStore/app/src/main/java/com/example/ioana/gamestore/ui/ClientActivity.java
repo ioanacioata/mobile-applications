@@ -61,6 +61,11 @@ public class ClientActivity extends AppCompatActivity implements MyCallback, Vie
         adapter = new ClientAdapter();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void showError(String message) {

@@ -95,13 +95,18 @@ public class Manager {
         call.enqueue(new Callback<List<Game>>() {
             @Override
             public void onResponse(Call<List<Game>> call, Response<List<Game>> response) {
+
                 List<Game> games = response.body();
                 Log.i(TAG, "Size of employee list is " + games.size());
                 app.employeeDatabase.getDao().deleteAll();
                 app.employeeDatabase.getDao().addAll(games);
+                Log.i(TAG, "Size of employee list DATABASE is " + app.employeeDatabase.getDao()
+                        .getAll().size());
+
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+                callback.clear();
             }
 
             @Override

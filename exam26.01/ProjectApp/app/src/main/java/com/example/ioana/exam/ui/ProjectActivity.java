@@ -1,4 +1,4 @@
-package com.example.ioana.gamestore.ui;
+package com.example.ioana.exam.ui;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -9,32 +9,26 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ioana.gamestore.R;
-import com.example.ioana.gamestore.config.GameApp;
-import com.example.ioana.gamestore.config.Manager;
-import com.example.ioana.gamestore.config.MyCallback;
-import com.example.ioana.gamestore.ui.adapter.EmployeeAdapter;
+import com.example.ioana.exam.R;
+import com.example.ioana.exam.config.MyCallback;
+import com.example.ioana.exam.ui.adapter.Adapter2;
 
-public class EmployeeActivity extends AppCompatActivity implements MyCallback {
+public class ProjectActivity extends AppCompatActivity implements MyCallback {
 
 
-    private static final String TAG = EmployeeActivity.class.getName();
+    private static final String TAG = ProjectActivity.class.getName();
     private final Handler handler = new Handler();
-    TextView text;
     ProgressDialog progressDialog;
-    private Manager manager;
-    private EmployeeAdapter adapter;
+    private Adapter2 adapter;
     private View recycleViewList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_employee);
+        setContentView(R.layout.activity_project);
 
-        manager = new Manager(getApplication());
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setIndeterminate(true);
@@ -70,32 +64,13 @@ public class EmployeeActivity extends AppCompatActivity implements MyCallback {
         setUpList((RecyclerView) recycleViewList);
 
     }
+
     private void setUpList(final RecyclerView recycleView) {
-        if (manager.networkConnectivity(getApplicationContext())) {
-            //then update
-            manager.loadAllForEmployee(progressDialog, this);
-            adapter = new EmployeeAdapter(getApplicationContext());
-            adapter.setData(((GameApp) getApplication()).clientDatabase.getDao().getAll());
-            recycleView.setAdapter(adapter);
-        } else {
-            Toast.makeText(getApplicationContext(), "No internet connection.", Toast
-                    .LENGTH_LONG)
-                    .show();
-            Log.i(TAG, "Check the connection");
-            progressDialog.show();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i(TAG, "Trying to reload the data");
-                    setUpList(recycleView);
-                    handler.postDelayed(this, 10000);
-                }
-            }, 20000); //milliseconds
-        }
+
     }
 
     @Override
-    public void showError(String message) {
+    public void showError(String location, String message) {
         Log.i(TAG, " in show error ...");
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
@@ -109,7 +84,7 @@ public class EmployeeActivity extends AppCompatActivity implements MyCallback {
     }
 
     @Override
-    public void showSuccess(String message) {
+    public void showSuccess(String location, String message) {
         Log.i(TAG, " successful operation ... ");
     }
 

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Project App</string>
+    <string name="section1">Idea Section</string>
+    <string name="section2">Project Section</string>
+    <string name="details">Details</string>
+
+    <!--activity 1 strings-->
+    <string name="list_name_1">The list of ideas …</string>
+    <string name="add_1">Add idea</string>
+
+</resources>
