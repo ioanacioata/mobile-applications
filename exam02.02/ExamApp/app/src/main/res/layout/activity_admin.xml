@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ioana.exam.ui.AdminActivity"
+    android:layout_margin="25dp"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/seeConfirmedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="See confirmed seats"
+
+        android:textAllCaps="false"
+        android:background="@android:color/holo_green_dark"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        />
+
+    <Button
+        android:id="@+id/seeTakenButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="See purchased seats"
+
+        android:textAllCaps="false"
+        android:background="@android:color/holo_orange_light"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        />
+
+    <Button
+        android:id="@+id/deleteAllSeatsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete all Seats"
+
+        android:textAllCaps="false"
+        android:background="@android:color/holo_red_light"
+        android:textColor="@color/white"
+        android:layout_margin="15dp"
+        android:padding="15dp"
+        />
+</LinearLayout>

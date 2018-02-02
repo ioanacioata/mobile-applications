@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Theatre App</string>
+    <string name="section1">Client Section</string>
+    <string name="section2">Theater Section</string>
+    <string name="section3">Admin Section</string>
+    <string name="seats">Seats</string>
+    <string name="details1"> Seats Details </string>
+    <string name="details2"> Seats Details</string>
+
+    <!--activity 1 strings-->
+    <string name="list_name_1">The list of seats …</string>
+    <string name="add_1">Add seat</string>
+    <string name="list_name_2">The list of seats …</string>
+    <string name="list_name_3">The list of seats …</string>
+
+</resources>
